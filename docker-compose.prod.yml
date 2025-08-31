@@ -1,0 +1,23 @@
+version: '3.8'
+
+services:
+  backend:
+    build: ./backend
+    container_name: inventoscan-backend
+    restart: unless-stopped
+    ports:
+      - "8000:8000"
+    env_file: .env
+    environment:
+      - ENV=production
+    
+  frontend:
+    build: 
+      context: ./frontend
+      dockerfile: Dockerfile.prod
+    container_name: inventoscan-frontend  
+    restart: unless-stopped
+    ports:
+      - "5173:80"
+    depends_on:
+      - backend
