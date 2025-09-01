@@ -5,12 +5,13 @@ services:
     build: ./backend
     container_name: inventoscan-backend
     restart: unless-stopped
-    ports:
-      - "8001:8000"  # Geändert auf 8001
     environment:
       - OPENAI_API_KEY=${OPENAI_API_KEY:-placeholder}
       - ANTHROPIC_API_KEY=${ANTHROPIC_API_KEY:-placeholder}
       - ENVIRONMENT=${ENVIRONMENT:-production}
+    networks:
+      container-vlan200:
+        ipv4_address: 10.2.200.101  # Feste IP
     
   frontend:
     build: 
@@ -18,7 +19,12 @@ services:
       dockerfile: Dockerfile.prod
     container_name: inventoscan-frontend  
     restart: unless-stopped
-    ports:
-      - "5173:80"
     depends_on:
       - backend
+    networks:
+      container-vlan200:
+        ipv4_address: 10.2.200.100  # Feste IP
+
+networks:
+  container-vlan200:
+    external: true
