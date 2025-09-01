@@ -1,0 +1,355 @@
+# InventoScan Design System
+
+## 🎨 Visual Identity
+
+### Farbpalette
+```css
+/* Dark Theme - Primär */
+--background-primary: #0A0E27;     /* Dunkles Blau-Schwarz */
+--background-secondary: #151932;   /* Karten-Hintergrund */
+--background-elevated: #1E2139;    /* Erhöhte Elemente */
+
+/* Akzentfarben */
+--accent-primary: #6366F1;         /* Indigo */
+--accent-secondary: #8B5CF6;       /* Purple */
+--accent-gradient: linear-gradient(135deg, #6366F1 0%, #8B5CF6 100%);
+
+/* Text */
+--text-primary: #FFFFFF;
+--text-secondary: #94A3B8;         /* Grau-Blau */
+--text-muted: #64748B;
+
+/* Status */
+--success: #10B981;
+--warning: #F59E0B;
+--danger: #EF4444;
+
+/* Borders & Overlays */
+--border: rgba(255, 255, 255, 0.1);
+--glass: rgba(255, 255, 255, 0.05);
+```
+
+### Typography
+```css
+/* Font Stack */
+--font-primary: 'Inter', -apple-system, system-ui, sans-serif;
+--font-mono: 'JetBrains Mono', monospace;
+
+/* Größen */
+--text-xs: 0.75rem;    /* 12px */
+--text-sm: 0.875rem;   /* 14px */
+--text-base: 1rem;     /* 16px */
+--text-lg: 1.125rem;   /* 18px */
+--text-xl: 1.25rem;    /* 20px */
+--text-2xl: 1.5rem;    /* 24px */
+--text-3xl: 1.875rem;  /* 30px */
+--text-4xl: 2.25rem;   /* 36px */
+
+/* Font Weights */
+--font-normal: 400;
+--font-medium: 500;
+--font-semibold: 600;
+--font-bold: 700;
+```
+
+## 🏗 Layout-Struktur
+
+### Dashboard Layout
+```
+┌─────────────────────────────────────────────┐
+│  Sidebar (240px)  │      Main Content        │
+│                   │                          │
+│  - Logo           │  ┌────────────────────┐ │
+│  - Navigation     │  │   Stats Cards Row   │ │
+│  - User Profile   │  └────────────────────┘ │
+│                   │                          │
+│                   │  ┌────────────────────┐ │
+│                   │  │   Product Grid     │ │
+│                   │  │  ┌────┐ ┌────┐    │ │
+│                   │  │  │Card │ │Card │    │ │
+│                   │  │  └────┘ └────┘    │ │
+│                   │  └────────────────────┘ │
+└─────────────────────────────────────────────┘
+```
+
+### Component Specifications
+
+#### Stats Card
+```tsx
+<div className="stats-card">
+  <div className="stats-icon">{icon}</div>
+  <div className="stats-content">
+    <p className="stats-label">Label</p>
+    <h3 className="stats-value">1,234</h3>
+    <span className="stats-change">+12%</span>
+  </div>
+</div>
+```
+
+```css
+.stats-card {
+  background: var(--background-secondary);
+  border: 1px solid var(--border);
+  border-radius: 16px;
+  padding: 24px;
+  backdrop-filter: blur(10px);
+  transition: all 0.3s ease;
+}
+
+.stats-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 8px 32px rgba(99, 102, 241, 0.1);
+}
+```
+
+#### Product Card
+```tsx
+<div className="product-card">
+  <div className="product-image">
+    <img src={image} alt={title} />
+    <div className="product-overlay">
+      <button className="quick-action">View</button>
+    </div>
+  </div>
+  <div className="product-info">
+    <h3>{title}</h3>
+    <p className="product-meta">{category}</p>
+    <div className="product-footer">
+      <span className="product-price">{price}</span>
+      <span className="product-status">{status}</span>
+    </div>
+  </div>
+</div>
+```
+
+## 🎯 UI Components
+
+### Buttons
+```css
+/* Primary Button */
+.btn-primary {
+  background: var(--accent-gradient);
+  color: white;
+  padding: 12px 24px;
+  border-radius: 8px;
+  font-weight: 600;
+  transition: all 0.3s ease;
+}
+
+/* Ghost Button */
+.btn-ghost {
+  background: transparent;
+  border: 1px solid var(--border);
+  color: var(--text-secondary);
+  padding: 12px 24px;
+  border-radius: 8px;
+}
+
+/* Icon Button */
+.btn-icon {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  background: var(--glass);
+  border: 1px solid var(--border);
+}
+```
+
+### Upload Area
+```tsx
+<div className="upload-area">
+  <div className="upload-icon">📸</div>
+  <h3>Drop images here</h3>
+  <p>or click to browse</p>
+  <div className="upload-formats">
+    JPG, PNG, WEBP up to 10MB
+  </div>
+</div>
+```
+
+```css
+.upload-area {
+  background: var(--glass);
+  border: 2px dashed var(--border);
+  border-radius: 16px;
+  padding: 48px;
+  text-align: center;
+  transition: all 0.3s ease;
+  cursor: pointer;
+}
+
+.upload-area:hover {
+  border-color: var(--accent-primary);
+  background: rgba(99, 102, 241, 0.05);
+}
+
+.upload-area.dragging {
+  border-color: var(--accent-secondary);
+  background: rgba(139, 92, 246, 0.1);
+}
+```
+
+## 📱 Responsive Breakpoints
+```css
+/* Mobile First */
+--mobile: 0px;        /* Default */
+--tablet: 768px;      /* md: */
+--desktop: 1024px;    /* lg: */
+--wide: 1280px;       /* xl: */
+--ultrawide: 1536px;  /* 2xl: */
+```
+
+## 🎭 Animations
+
+### Transitions
+```css
+/* Standard Easing */
+--ease-in-out: cubic-bezier(0.4, 0, 0.2, 1);
+--ease-out: cubic-bezier(0, 0, 0.2, 1);
+--ease-in: cubic-bezier(0.4, 0, 1, 1);
+
+/* Durations */
+--duration-fast: 150ms;
+--duration-normal: 300ms;
+--duration-slow: 500ms;
+```
+
+### Hover Effects
+```css
+/* Card Hover */
+.card:hover {
+  transform: translateY(-4px) scale(1.02);
+  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
+}
+
+/* Glow Effect */
+.glow:hover {
+  box-shadow: 
+    0 0 20px rgba(99, 102, 241, 0.3),
+    0 0 40px rgba(99, 102, 241, 0.2);
+}
+```
+
+## 🖼 Image Gallery Layout
+
+### Grid View
+```css
+.image-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: 24px;
+}
+
+.image-item {
+  aspect-ratio: 1;
+  border-radius: 12px;
+  overflow: hidden;
+  position: relative;
+  background: var(--background-secondary);
+}
+
+.image-item img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 0.3s ease;
+}
+
+.image-item:hover img {
+  transform: scale(1.1);
+}
+```
+
+## 📊 Dashboard Widgets
+
+### Chart Container
+```css
+.chart-container {
+  background: var(--background-secondary);
+  border: 1px solid var(--border);
+  border-radius: 16px;
+  padding: 24px;
+  height: 400px;
+}
+
+.chart-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 24px;
+}
+```
+
+### Table Design
+```css
+.data-table {
+  background: var(--background-secondary);
+  border-radius: 12px;
+  overflow: hidden;
+}
+
+.data-table th {
+  background: var(--background-elevated);
+  padding: 16px;
+  text-align: left;
+  font-weight: 600;
+  color: var(--text-secondary);
+  border-bottom: 1px solid var(--border);
+}
+
+.data-table td {
+  padding: 16px;
+  border-bottom: 1px solid var(--border);
+}
+
+.data-table tr:hover {
+  background: var(--glass);
+}
+```
+
+## 🔧 Tailwind Config (falls verwendet)
+
+```js
+// tailwind.config.js
+module.exports = {
+  theme: {
+    extend: {
+      colors: {
+        'bg-primary': '#0A0E27',
+        'bg-secondary': '#151932',
+        'bg-elevated': '#1E2139',
+        'accent': {
+          primary: '#6366F1',
+          secondary: '#8B5CF6',
+        }
+      },
+      backdropBlur: {
+        xs: '2px',
+      },
+      backgroundImage: {
+        'gradient-primary': 'linear-gradient(135deg, #6366F1 0%, #8B5CF6 100%)',
+      }
+    }
+  }
+}
+```
+
+## 📝 Claude Code Instruktionen
+
+### MUST FOLLOW:
+1. **Dark Theme Only** - Kein Light Mode Toggle
+2. **Card-Based Layout** - Alle Inhalte in Karten
+3. **Glassmorphism** - Subtle backdrop-blur Effekte
+4. **Gradient Akzente** - Nur für wichtige CTAs
+5. **Hover-Animationen** - Smooth transitions auf allen interaktiven Elementen
+
+### NEVER DO:
+- Keine harten Schatten (nur soft shadows)
+- Keine pure white (#FFFFFF) Hintergründe
+- Keine rechteckigen Buttons (immer border-radius)
+- Keine statischen Cards (immer hover effects)
+- Kein Comic Sans (obviously)
+
+---
+
+**Dieses Design-System ist verbindlich für alle UI-Entwicklungen in InventoScan.**
