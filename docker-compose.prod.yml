@@ -6,7 +6,7 @@ services:
     container_name: inventoscan-backend
     restart: unless-stopped
     ports:
-      - "8000:8000"
+      - "8001:8000"  # Geändert auf 8001
     environment:
       - OPENAI_API_KEY=${OPENAI_API_KEY:-placeholder}
       - ANTHROPIC_API_KEY=${ANTHROPIC_API_KEY:-placeholder}
