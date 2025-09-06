@@ -1,0 +1,227 @@
+/* Mobile Navigation - Optimized for iPad & Mobile */
+.mobile-nav {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  background: var(--bg-card);
+  border-top: 1px solid var(--border-default);
+  display: none;
+  padding: var(--space-2) var(--space-2) env(safe-area-inset-bottom, var(--space-2));
+  z-index: var(--z-modal);
+  backdrop-filter: var(--blur-md);
+  -webkit-backdrop-filter: var(--blur-md);
+}
+
+.nav-item {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: var(--space-2) var(--space-1);
+  background: transparent;
+  border: none;
+  color: var(--text-secondary);
+  cursor: pointer;
+  transition: all var(--transition-base) var(--ease-in-out);
+  min-height: 56px;
+  -webkit-tap-highlight-color: transparent;
+  touch-action: manipulation;
+}
+
+.nav-item.active {
+  color: var(--primary-purple);
+}
+
+.nav-item.active .nav-icon {
+  transform: scale(1.1);
+}
+
+.nav-icon {
+  font-size: 24px;
+  margin-bottom: var(--space-1);
+  transition: transform var(--transition-base) var(--ease-out);
+}
+
+.nav-label {
+  font-size: 0.625rem;
+  font-weight: var(--font-medium);
+  white-space: nowrap;
+}
+
+/* Show mobile nav on small screens */
+@media (max-width: 767px) {
+  .mobile-nav {
+    display: flex;
+  }
+  
+  /* Add padding to main content to account for fixed nav */
+  .app-main {
+    padding-bottom: 80px !important;
+  }
+}
+
+/* iPad Portrait - Side Navigation */
+@media (min-width: 768px) and (max-width: 1024px) and (orientation: portrait) {
+  .mobile-nav {
+    display: flex;
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    background: rgba(21, 25, 50, 0.95);
+    border-top: 1px solid rgba(255, 255, 255, 0.1);
+    padding: 12px 20px env(safe-area-inset-bottom, 12px);
+    justify-content: space-around;
+  }
+
+  .nav-item {
+    min-height: 64px;
+    padding: 10px 8px;
+    flex: 0 1 auto;
+    min-width: 80px;
+  }
+
+  .nav-icon {
+    font-size: 28px;
+    margin-bottom: 6px;
+  }
+
+  .nav-label {
+    font-size: 0.75rem;
+    font-weight: 600;
+  }
+
+  /* Adjust main content for bottom nav */
+  .app-main {
+    padding-bottom: 100px !important;
+  }
+}
+
+/* iPad Landscape - Side Navigation Bar */
+@media (min-width: 1024px) and (max-width: 1366px) and (orientation: landscape) {
+  .mobile-nav {
+    display: flex;
+    flex-direction: column;
+    position: fixed;
+    left: 0;
+    top: 0;
+    bottom: 0;
+    width: 80px;
+    background: rgba(21, 25, 50, 0.98);
+    border-right: 1px solid rgba(255, 255, 255, 0.1);
+    border-top: none;
+    padding: 20px 0;
+    padding-top: max(20px, env(safe-area-inset-top));
+    justify-content: flex-start;
+    gap: 8px;
+  }
+
+  .nav-item {
+    flex: 0 0 auto;
+    min-height: 72px;
+    width: 100%;
+    padding: 12px 4px;
+  }
+
+  .nav-item:hover {
+    background: rgba(99, 102, 241, 0.1);
+  }
+
+  .nav-icon {
+    font-size: 26px;
+    margin-bottom: 8px;
+  }
+
+  .nav-label {
+    font-size: 0.7rem;
+    font-weight: 600;
+    letter-spacing: -0.01em;
+  }
+
+  /* Adjust main content for side nav */
+  .app-main {
+    margin-left: 80px !important;
+    padding-bottom: 20px !important;
+  }
+
+  .app-header {
+    margin-left: 80px;
+  }
+
+  .dashboard-container {
+    margin-left: 0;
+  }
+}
+
+/* iPad Pro Specific Adjustments */
+@media (min-width: 1024px) and (max-width: 1366px) {
+  .mobile-nav {
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
+  }
+
+  .nav-item {
+    position: relative;
+  }
+
+  .nav-item.active::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 3px;
+    height: 40px;
+    background: var(--accent-gradient);
+    border-radius: 0 3px 3px 0;
+  }
+}
+
+/* Responsive Navigation Visibility */
+@media (min-width: 768px) and (max-width: 1366px) {
+  /* Always show navigation on iPad */
+  .mobile-nav {
+    display: flex;
+  }
+
+  /* Add active state visual feedback */
+  .nav-item:active {
+    background: rgba(99, 102, 241, 0.2);
+    transform: scale(0.95);
+  }
+
+  /* Smooth transitions for orientation changes */
+  .mobile-nav,
+  .app-main,
+  .app-header {
+    transition: all 0.3s ease;
+  }
+}
+
+/* Touch-friendly adjustments for all tablets */
+@media (pointer: coarse) and (min-width: 768px) {
+  .nav-item {
+    position: relative;
+    overflow: hidden;
+  }
+
+  /* Ripple effect on touch */
+  .nav-item::after {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 0;
+    height: 0;
+    border-radius: 50%;
+    background: rgba(255, 255, 255, 0.1);
+    transform: translate(-50%, -50%);
+    transition: width 0.3s, height 0.3s;
+  }
+
+  .nav-item:active::after {
+    width: 100px;
+    height: 100px;
+  }
+}

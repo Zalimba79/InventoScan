@@ -1,0 +1,226 @@
+/* Spinner Component Styles - Design System Implementation */
+
+.spinner-wrapper {
+  display: inline-flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--space-3);
+}
+
+/* Spinner Base */
+.spinner {
+  position: relative;
+  display: inline-block;
+}
+
+/* Sizes */
+.spinner-sm {
+  width: 24px;
+  height: 24px;
+}
+
+.spinner-md {
+  width: 40px;
+  height: 40px;
+}
+
+.spinner-lg {
+  width: 56px;
+  height: 56px;
+}
+
+.spinner-xl {
+  width: 72px;
+  height: 72px;
+}
+
+/* Colors */
+.spinner-primary {
+  color: var(--primary-purple);
+}
+
+.spinner-white {
+  color: var(--text-primary);
+}
+
+.spinner-current {
+  color: currentColor;
+}
+
+/* Spinner Rings */
+.spinner-ring {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  border-radius: var(--radius-full);
+  border: 2px solid transparent;
+  border-top-color: currentColor;
+  animation: spinnerRotate 1.5s cubic-bezier(0.68, -0.55, 0.265, 1.55) infinite;
+}
+
+.spinner-sm .spinner-ring {
+  border-width: 2px;
+}
+
+.spinner-lg .spinner-ring,
+.spinner-xl .spinner-ring {
+  border-width: 3px;
+}
+
+.spinner-ring:nth-child(1) {
+  animation-delay: 0s;
+  opacity: 1;
+}
+
+.spinner-ring:nth-child(2) {
+  animation-delay: 0.15s;
+  opacity: 0.7;
+  width: 80%;
+  height: 80%;
+  top: 10%;
+  left: 10%;
+}
+
+.spinner-ring:nth-child(3) {
+  animation-delay: 0.3s;
+  opacity: 0.5;
+  width: 60%;
+  height: 60%;
+  top: 20%;
+  left: 20%;
+}
+
+@keyframes spinnerRotate {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+}
+
+/* Spinner Label */
+.spinner-label {
+  font-size: var(--text-sm);
+  color: var(--text-secondary);
+  font-weight: var(--font-medium);
+  margin: 0;
+}
+
+/* Container - Centered */
+.spinner-container {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  padding: var(--space-8);
+  min-height: 200px;
+}
+
+/* Fullscreen Spinner */
+.spinner-fullscreen {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(17, 9, 34, 0.95);
+  backdrop-filter: var(--blur-md);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: var(--z-modal);
+  animation: fadeIn var(--transition-fast) var(--ease-out);
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+/* Pulse Effect Variant */
+.spinner-pulse {
+  position: relative;
+  display: inline-block;
+}
+
+.spinner-pulse::before {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 150%;
+  height: 150%;
+  background: var(--gradient-glow);
+  border-radius: var(--radius-full);
+  opacity: 0.3;
+  filter: blur(20px);
+  animation: pulse 2s var(--ease-in-out) infinite;
+}
+
+@keyframes pulse {
+  0%, 100% {
+    transform: translate(-50%, -50%) scale(0.8);
+    opacity: 0.3;
+  }
+  50% {
+    transform: translate(-50%, -50%) scale(1.2);
+    opacity: 0.1;
+  }
+}
+
+/* Loading Bar Variant */
+.spinner-bar {
+  width: 200px;
+  height: 4px;
+  background: rgba(255, 255, 255, 0.1);
+  border-radius: var(--radius-full);
+  overflow: hidden;
+  position: relative;
+}
+
+.spinner-bar::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  height: 100%;
+  width: 40%;
+  background: var(--gradient-purple);
+  border-radius: var(--radius-full);
+  animation: loadingBar 1.5s ease-in-out infinite;
+}
+
+@keyframes loadingBar {
+  0% {
+    transform: translateX(-100%);
+  }
+  100% {
+    transform: translateX(350%);
+  }
+}
+
+/* Inline Spinner */
+.spinner-inline {
+  display: inline-block;
+  vertical-align: middle;
+  margin: 0 var(--space-2);
+}
+
+/* Button with Spinner */
+.btn .spinner {
+  margin-right: var(--space-2);
+  display: inline-block;
+  vertical-align: middle;
+}
+
+/* Accessibility */
+@media (prefers-reduced-motion: reduce) {
+  .spinner-ring,
+  .spinner-pulse::before,
+  .spinner-bar::after {
+    animation: none;
+    opacity: 0.8;
+  }
+}

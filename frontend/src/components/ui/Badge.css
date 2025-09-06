@@ -1,0 +1,183 @@
+/* Badge Component Styles - Design System Implementation */
+
+.badge {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--space-1);
+  font-family: var(--font-primary);
+  font-weight: var(--font-medium);
+  border-radius: var(--radius-md);
+  transition: all var(--transition-base) var(--ease-in-out);
+  white-space: nowrap;
+  vertical-align: middle;
+  border: 1px solid transparent;
+}
+
+/* Sizes */
+.badge-sm {
+  padding: var(--space-1) var(--space-2);
+  font-size: var(--text-xs);
+  min-height: 20px;
+}
+
+.badge-md {
+  padding: calc(var(--space-1) + 2px) var(--space-3);
+  font-size: var(--text-sm);
+  min-height: 24px;
+}
+
+.badge-lg {
+  padding: var(--space-2) var(--space-4);
+  font-size: var(--text-base);
+  min-height: 32px;
+}
+
+/* Variants */
+.badge-default {
+  background: var(--bg-card);
+  color: var(--text-secondary);
+  border-color: var(--border-default);
+}
+
+.badge-primary {
+  background: rgba(141, 123, 251, 0.2);
+  color: var(--primary-purple-light);
+  border-color: rgba(141, 123, 251, 0.3);
+}
+
+.badge-success {
+  background: rgba(74, 222, 128, 0.2);
+  color: var(--success);
+  border-color: rgba(74, 222, 128, 0.3);
+}
+
+.badge-warning {
+  background: rgba(251, 191, 36, 0.2);
+  color: var(--warning);
+  border-color: rgba(251, 191, 36, 0.3);
+}
+
+.badge-danger {
+  background: rgba(239, 68, 68, 0.2);
+  color: var(--error);
+  border-color: rgba(239, 68, 68, 0.3);
+}
+
+.badge-info {
+  background: rgba(59, 130, 246, 0.2);
+  color: var(--info);
+  border-color: rgba(59, 130, 246, 0.3);
+}
+
+/* Pill Style */
+.badge-pill {
+  border-radius: var(--radius-full);
+}
+
+/* With Dot */
+.badge-with-dot {
+  padding-left: var(--space-2);
+}
+
+.badge-dot {
+  width: 6px;
+  height: 6px;
+  border-radius: var(--radius-full);
+  background: currentColor;
+  animation: pulse 2s var(--ease-in-out) infinite;
+}
+
+@keyframes pulse {
+  0%, 100% {
+    opacity: 1;
+    transform: scale(1);
+  }
+  50% {
+    opacity: 0.6;
+    transform: scale(0.8);
+  }
+}
+
+/* Badge Group */
+.badge-group {
+  display: inline-flex;
+  flex-wrap: wrap;
+  gap: var(--space-2);
+  align-items: center;
+}
+
+/* Hover Effects */
+.badge:hover {
+  transform: translateY(-1px);
+}
+
+.badge-default:hover {
+  background: var(--bg-card-hover);
+  border-color: var(--border-hover);
+}
+
+.badge-primary:hover {
+  background: rgba(141, 123, 251, 0.3);
+  box-shadow: 0 0 12px rgba(141, 123, 251, 0.3);
+}
+
+.badge-success:hover {
+  background: rgba(74, 222, 128, 0.3);
+  box-shadow: 0 0 12px rgba(74, 222, 128, 0.3);
+}
+
+.badge-warning:hover {
+  background: rgba(251, 191, 36, 0.3);
+  box-shadow: 0 0 12px rgba(251, 191, 36, 0.3);
+}
+
+.badge-danger:hover {
+  background: rgba(239, 68, 68, 0.3);
+  box-shadow: 0 0 12px rgba(239, 68, 68, 0.3);
+}
+
+.badge-info:hover {
+  background: rgba(59, 130, 246, 0.3);
+  box-shadow: 0 0 12px rgba(59, 130, 246, 0.3);
+}
+
+/* Interactive Badge */
+.badge[role="button"],
+.badge.badge-clickable {
+  cursor: pointer;
+  user-select: none;
+}
+
+.badge[role="button"]:active,
+.badge.badge-clickable:active {
+  transform: scale(0.95);
+}
+
+/* Count Badge */
+.badge-count {
+  min-width: 20px;
+  padding: 0 var(--space-1);
+}
+
+/* Status Badge with Animation */
+.badge-status-active .badge-dot {
+  background: var(--success);
+}
+
+.badge-status-inactive .badge-dot {
+  background: var(--text-muted);
+  animation: none;
+}
+
+.badge-status-busy .badge-dot {
+  background: var(--warning);
+  animation: pulse 1s var(--ease-in-out) infinite;
+}
+
+/* Responsive */
+@media (max-width: 640px) {
+  .badge-group {
+    gap: var(--space-1);
+  }
+}

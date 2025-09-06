@@ -1,0 +1,469 @@
+/* Splash Screen Styles */
+
+.splash-screen {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: linear-gradient(135deg, var(--bg-dark-primary) 0%, var(--bg-dark-secondary) 100%);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: var(--z-notification);
+  overflow: hidden;
+  transition: opacity var(--transition-slow) var(--ease-out);
+  cursor: pointer;
+}
+
+/* Remove tap hint since sound doesn't work reliably */
+
+.splash-screen.fade-out {
+  opacity: 0;
+  pointer-events: none;
+}
+
+/* Animated Particles */
+.particles {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+}
+
+.particle {
+  position: absolute;
+  width: 4px;
+  height: 4px;
+  background: var(--gradient-purple);
+  border-radius: var(--radius-full);
+  opacity: 0;
+  animation: float-up 4s ease-out infinite;
+}
+
+@keyframes float-up {
+  0% {
+    transform: translateY(100vh) scale(0);
+    opacity: 0;
+  }
+  10% {
+    opacity: 1;
+  }
+  90% {
+    opacity: 1;
+  }
+  100% {
+    transform: translateY(-100vh) scale(1.5);
+    opacity: 0;
+  }
+}
+
+/* Content Container */
+.splash-content {
+  position: relative;
+  z-index: var(--z-10);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--space-8);
+}
+
+/* Logo Container */
+.logo-container {
+  position: relative;
+  opacity: 0;
+  transform: scale(0.5) rotate(-180deg);
+  transition: all 0.8s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+}
+
+.logo-container.show {
+  opacity: 1;
+  transform: scale(1) rotate(0deg);
+}
+
+.logo-image-wrapper {
+  width: 200px;
+  height: 200px;
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: var(--radius-2xl);
+  overflow: hidden;
+}
+
+.logo-image {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  border-radius: var(--radius-2xl);
+}
+
+.logo-backdrop {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  background: rgba(10, 14, 39, 0.5);
+  z-index: 0;
+}
+
+.logo-shine {
+  position: absolute;
+  top: -50%;
+  left: -50%;
+  width: 200%;
+  height: 200%;
+  background: linear-gradient(
+    45deg,
+    transparent 30%,
+    rgba(255, 255, 255, 0.1) 50%,
+    transparent 70%
+  );
+  animation: shine 3s ease-in-out infinite;
+  z-index: 2;
+  pointer-events: none;
+}
+
+@keyframes shine {
+  0% {
+    transform: rotate(0deg) translateX(-100%);
+  }
+  100% {
+    transform: rotate(0deg) translateX(100%);
+  }
+}
+
+@keyframes pulse {
+  0%, 100% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(1.05);
+  }
+}
+
+.scan-line {
+  animation: scan 2s linear infinite;
+  stroke-dasharray: 40;
+  stroke-dashoffset: 0;
+}
+
+@keyframes scan {
+  0% {
+    stroke-dashoffset: 40;
+    opacity: 0;
+  }
+  50% {
+    stroke-dashoffset: 0;
+    opacity: 1;
+  }
+  100% {
+    stroke-dashoffset: -40;
+    opacity: 0;
+  }
+}
+
+.scan-dot {
+  animation: blink 2s ease-in-out infinite;
+}
+
+@keyframes blink {
+  0%, 100% {
+    opacity: 0.3;
+  }
+  50% {
+    opacity: 1;
+  }
+}
+
+.logo-glow {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 150%;
+  height: 150%;
+  background: radial-gradient(circle, rgba(99, 102, 241, 0.3) 0%, transparent 70%);
+  transform: translate(-50%, -50%);
+  animation: glow 2s ease-in-out infinite;
+}
+
+@keyframes glow {
+  0%, 100% {
+    opacity: 0.5;
+  }
+  50% {
+    opacity: 1;
+  }
+}
+
+/* App Name */
+.app-name {
+  font-size: var(--text-5xl);
+  font-weight: var(--font-bold);
+  opacity: 0;
+  transform: translateY(var(--space-5));
+  transition: all 0.6s var(--ease-out);
+  display: flex;
+  gap: var(--space-2);
+}
+
+.app-name.show {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.name-invento {
+  background: var(--gradient-purple);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  animation: shimmer 3s ease-in-out infinite;
+}
+
+.name-scan {
+  color: white;
+  position: relative;
+}
+
+@keyframes shimmer {
+  0%, 100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.8;
+  }
+}
+
+/* Tagline */
+.app-tagline {
+  color: var(--text-secondary);
+  font-size: var(--text-base);
+  opacity: 0;
+  transform: translateY(var(--space-5));
+  transition: all 0.6s var(--ease-out) 0.2s;
+  letter-spacing: 0.05em;
+}
+
+.app-tagline.show {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* Loading Container */
+.loading-container {
+  opacity: 0;
+  transform: translateY(var(--space-5));
+  transition: all 0.6s var(--ease-out);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--space-3);
+  min-width: 200px;
+}
+
+.loading-container.show {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.loading-bar {
+  width: 200px;
+  height: 4px;
+  background: rgba(255, 255, 255, 0.1);
+  border-radius: var(--radius-sm);
+  overflow: hidden;
+  position: relative;
+}
+
+.loading-progress {
+  height: 100%;
+  background: var(--gradient-purple);
+  border-radius: var(--radius-sm);
+  animation: progress 4.4s ease-out forwards;
+  box-shadow: var(--shadow-glow);
+}
+
+@keyframes progress {
+  0% {
+    width: 0%;
+  }
+  10% {
+    width: 15%;
+  }
+  30% {
+    width: 35%;
+  }
+  50% {
+    width: 55%;
+  }
+  70% {
+    width: 75%;
+  }
+  90% {
+    width: 95%;
+  }
+  100% {
+    width: 100%;
+  }
+}
+
+.loading-text {
+  color: var(--text-muted);
+  font-size: var(--text-sm);
+  animation: fade-pulse 1.5s ease-in-out infinite;
+}
+
+@keyframes fade-pulse {
+  0%, 100% {
+    opacity: 0.5;
+  }
+  50% {
+    opacity: 1;
+  }
+}
+
+/* Footer Decoration */
+.splash-footer {
+  position: absolute;
+  bottom: 60px;
+  left: 50%;
+  transform: translateX(-50%);
+}
+
+.pulse-ring {
+  position: absolute;
+  width: 60px;
+  height: 60px;
+  border: 2px solid rgba(99, 102, 241, 0.3);
+  border-radius: 50%;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  animation: ring-pulse 3s linear infinite;
+}
+
+.pulse-ring.delay-1 {
+  animation-delay: 1s;
+}
+
+.pulse-ring.delay-2 {
+  animation-delay: 2s;
+}
+
+@keyframes ring-pulse {
+  0% {
+    width: 0;
+    height: 0;
+    opacity: 1;
+  }
+  100% {
+    width: 60px;
+    height: 60px;
+    opacity: 0;
+  }
+}
+
+/* Desktop - Larger logo */
+@media (min-width: 769px) {
+  .logo-image-wrapper {
+    width: 400px;
+    height: 400px;
+  }
+}
+
+/* Camera Flash Effect - Enhanced */
+.camera-flash {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: radial-gradient(circle at center, white, rgba(255, 255, 255, 0.9));
+  z-index: 10001;
+  animation: flash 0.4s ease-out;
+  pointer-events: none;
+  mix-blend-mode: screen;
+}
+
+@keyframes flash {
+  0% {
+    opacity: 0;
+    transform: scale(0.8);
+  }
+  20% {
+    opacity: 1;
+    transform: scale(1.1);
+  }
+  100% {
+    opacity: 0;
+    transform: scale(1);
+  }
+}
+
+/* Scan Animation */
+.scan-animation {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  overflow: hidden;
+  border-radius: 45px;
+  pointer-events: none;
+}
+
+.scan-line-vertical {
+  position: absolute;
+  top: -10%;
+  left: 0;
+  width: 100%;
+  height: 2px;
+  background: linear-gradient(
+    90deg,
+    transparent,
+    rgba(99, 102, 241, 0.8),
+    rgba(139, 92, 246, 0.8),
+    transparent
+  );
+  box-shadow: 
+    0 0 20px rgba(99, 102, 241, 0.8),
+    0 0 40px rgba(139, 92, 246, 0.6);
+  animation: scan-down 1.5s ease-out;
+}
+
+@keyframes scan-down {
+  0% {
+    top: -10%;
+    opacity: 0;
+  }
+  10% {
+    opacity: 1;
+  }
+  90% {
+    opacity: 1;
+  }
+  100% {
+    top: 110%;
+    opacity: 0;
+  }
+}
+
+/* Mobile Adjustments */
+@media (max-width: 480px) {
+  .logo-image-wrapper {
+    width: 200px;
+    height: 200px;
+  }
+  
+  .app-name {
+    font-size: 2rem;
+  }
+  
+  .app-tagline {
+    font-size: 0.875rem;
+  }
+  
+  .loading-bar {
+    width: 160px;
+  }
+}

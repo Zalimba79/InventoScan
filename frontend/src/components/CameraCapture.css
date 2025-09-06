@@ -1,0 +1,482 @@
+/* Camera Capture - Native App Style with Design System */
+
+.camera-capture {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  height: 100dvh; /* Dynamic viewport height for iOS */
+  z-index: var(--z-modal);
+  background: var(--bg-dark-primary);
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  touch-action: none; /* Prevent pull-to-refresh */
+}
+
+/* iPad Specific Camera Styles */
+@media (min-width: 768px) and (max-width: 1366px) {
+  .camera-capture {
+    background: var(--bg-dark-primary);
+  }
+  
+  .camera-video {
+    object-fit: contain; /* Better for iPad's larger screen */
+    background: var(--bg-dark-primary);
+  }
+}
+
+/* Camera View */
+.camera-view {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+}
+
+.camera-video {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  background: var(--bg-dark-primary);
+}
+
+/* Top Controls */
+.camera-top-controls {
+  position: fixed; /* Fixed instead of absolute */
+  top: 0;
+  left: 0;
+  right: 0;
+  padding-top: max(env(safe-area-inset-top), var(--space-5));
+  padding-left: var(--space-5);
+  padding-right: var(--space-5);
+  padding-bottom: var(--space-5);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background: linear-gradient(to bottom, rgba(17,9,34,0.8), rgba(17,9,34,0.4), transparent);
+  z-index: var(--z-tooltip);
+  pointer-events: none; /* Let taps through except on buttons */
+}
+
+.camera-top-controls > * {
+  pointer-events: auto; /* Re-enable for buttons */
+}
+
+.btn-close,
+.btn-flash {
+  width: 48px;
+  height: 48px;
+  min-width: 48px;
+  min-height: 48px;
+  border-radius: var(--radius-full);
+  background: var(--bg-card);
+  backdrop-filter: var(--blur-lg);
+  -webkit-backdrop-filter: var(--blur-lg);
+  border: 1px solid var(--border-default);
+  color: var(--text-primary);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: all var(--transition-base) var(--ease-in-out);
+  box-shadow: var(--shadow-md);
+  -webkit-tap-highlight-color: transparent;
+  touch-action: manipulation;
+}
+
+.btn-close:hover,
+.btn-flash:hover {
+  background: var(--bg-card-hover);
+  border-color: var(--border-hover);
+  transform: translateY(-2px);
+  box-shadow: var(--shadow-glow);
+}
+
+@media (min-width: 768px) and (max-width: 1366px) {
+  .btn-close,
+  .btn-flash {
+    width: 56px;
+    height: 56px;
+    min-width: 56px;
+    min-height: 56px;
+    font-size: var(--text-xl);
+  }
+}
+
+.btn-close:active,
+.btn-flash:active {
+  transform: scale(0.95);
+  background: var(--bg-card-hover);
+}
+
+.btn-flash.flash-on {
+  background: rgba(251, 191, 36, 0.2);
+  border-color: var(--warning);
+  color: var(--warning);
+  box-shadow: 0 0 20px rgba(251, 191, 36, 0.3);
+}
+
+.btn-flash.flash-auto {
+  background: rgba(141, 123, 251, 0.2);
+  border-color: var(--primary-purple);
+  color: var(--primary-purple);
+  box-shadow: 0 0 20px rgba(141, 123, 251, 0.3);
+}
+
+/* Bottom Controls */
+.camera-bottom-controls {
+  position: fixed; /* Fixed to prevent jumping */
+  bottom: 0;
+  left: 0;
+  right: 0;
+  padding-top: var(--space-8);
+  padding-left: var(--space-5);
+  padding-right: var(--space-5);
+  padding-bottom: max(env(safe-area-inset-bottom), var(--space-8));
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  background: linear-gradient(to top, rgba(17,9,34,0.9), rgba(17,9,34,0.6), transparent);
+  z-index: var(--z-tooltip);
+}
+
+/* Gallery Button */
+.btn-gallery,
+.btn-switch {
+  width: 60px;
+  height: 60px;
+  min-width: 60px;
+  min-height: 60px;
+  border-radius: var(--radius-full);
+  background: var(--bg-card);
+  backdrop-filter: var(--blur-lg);
+  -webkit-backdrop-filter: var(--blur-lg);
+  border: 1px solid var(--border-purple);
+  color: var(--text-primary);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: all var(--transition-base) var(--ease-in-out);
+  box-shadow: var(--shadow-lg);
+  -webkit-tap-highlight-color: transparent;
+  touch-action: manipulation;
+}
+
+.btn-gallery:hover,
+.btn-switch:hover {
+  transform: translateY(-2px);
+  box-shadow: var(--shadow-glow);
+  background: var(--bg-card-hover);
+  border-color: var(--primary-purple);
+}
+
+@media (min-width: 768px) and (max-width: 1366px) {
+  .btn-gallery,
+  .btn-switch {
+    width: 72px;
+    height: 72px;
+    min-width: 72px;
+    min-height: 72px;
+    font-size: var(--text-2xl);
+  }
+}
+
+.btn-gallery:active,
+.btn-switch:active {
+  transform: scale(0.95);
+  background: var(--bg-card-hover);
+}
+
+/* Shutter Button */
+.btn-shutter {
+  width: 80px;
+  height: 80px;
+  padding: 0;
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  transition: transform var(--transition-fast) var(--ease-in-out);
+  -webkit-tap-highlight-color: transparent;
+  touch-action: manipulation;
+}
+
+@media (min-width: 768px) and (max-width: 1366px) {
+  .btn-shutter {
+    width: 96px;
+    height: 96px;
+  }
+  
+  .btn-shutter svg {
+    width: 96px;
+    height: 96px;
+  }
+}
+
+.btn-shutter:active:not(:disabled) {
+  transform: scale(0.95);
+}
+
+.btn-shutter:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.shutter-outer {
+  width: 80px;
+  height: 80px;
+  border-radius: var(--radius-full);
+  background: var(--gradient-purple);
+  border: 4px solid var(--primary-purple);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  transition: all var(--transition-base) var(--ease-in-out);
+  box-shadow: 0 0 30px rgba(141, 123, 251, 0.5);
+}
+
+.shutter-inner {
+  width: 60px;
+  height: 60px;
+  border-radius: var(--radius-full);
+  background: var(--text-primary);
+  transition: all var(--transition-fast) var(--ease-in-out);
+}
+
+.btn-shutter:hover:not(:disabled) .shutter-outer {
+  transform: scale(1.05);
+  box-shadow: var(--shadow-glow);
+}
+
+.btn-shutter:active:not(:disabled) .shutter-inner {
+  width: 50px;
+  height: 50px;
+  background: rgba(255, 255, 255, 0.9);
+}
+
+.btn-shutter.capturing .shutter-inner {
+  animation: capture-pulse 0.5s ease;
+}
+
+@keyframes capture-pulse {
+  0% { transform: scale(1); opacity: 1; }
+  50% { transform: scale(0.8); opacity: 0.8; }
+  100% { transform: scale(1); opacity: 1; }
+}
+
+/* Flash Overlay Effect */
+.flash-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: white;
+  z-index: var(--z-notification);
+  pointer-events: none;
+  animation: flash-effect 0.2s ease-out;
+}
+
+@keyframes flash-effect {
+  0% { opacity: 0.8; }
+  100% { opacity: 0; }
+}
+
+/* Photo Review */
+.photo-review {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  background: var(--bg-dark-primary);
+}
+
+.review-image {
+  flex: 1;
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  background: var(--bg-dark-primary);
+}
+
+/* Review Controls */
+.review-controls {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  padding: var(--space-8) var(--space-5);
+  padding-bottom: max(env(safe-area-inset-bottom), var(--space-8));
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  background: linear-gradient(to top, rgba(17,9,34,0.9), rgba(17,9,34,0.7), transparent);
+}
+
+.btn-discard,
+.btn-retake,
+.btn-confirm {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--space-2);
+  padding: var(--space-3) var(--space-5);
+  background: var(--bg-card);
+  backdrop-filter: var(--blur-md);
+  -webkit-backdrop-filter: var(--blur-md);
+  border: 1px solid var(--border-default);
+  border-radius: var(--radius-xl);
+  color: var(--text-primary);
+  font-size: var(--text-sm);
+  font-weight: var(--font-medium);
+  cursor: pointer;
+  transition: all var(--transition-base) var(--ease-in-out);
+  min-width: 90px;
+}
+
+.btn-discard {
+  background: rgba(239, 68, 68, 0.1);
+  border-color: rgba(239, 68, 68, 0.3);
+  color: var(--error);
+}
+
+.btn-discard:hover {
+  background: rgba(239, 68, 68, 0.2);
+  border-color: var(--error);
+  transform: translateY(-2px);
+  box-shadow: 0 0 20px rgba(239, 68, 68, 0.3);
+}
+
+.btn-discard:active {
+  transform: scale(0.95);
+}
+
+.btn-retake {
+  background: var(--bg-card);
+  border-color: var(--border-purple);
+  color: var(--text-secondary);
+}
+
+.btn-retake:hover {
+  background: var(--bg-card-hover);
+  border-color: var(--primary-purple);
+  color: var(--text-primary);
+  transform: translateY(-2px);
+  box-shadow: var(--shadow-glow);
+}
+
+.btn-retake:active {
+  transform: scale(0.95);
+}
+
+.btn-confirm {
+  background: var(--gradient-purple);
+  border-color: var(--primary-purple);
+  color: var(--text-primary);
+  font-weight: var(--font-semibold);
+}
+
+.btn-confirm:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 10px 30px rgba(141, 123, 251, 0.4);
+}
+
+.btn-confirm:active {
+  transform: scale(0.95);
+}
+
+/* Icons */
+.camera-capture svg {
+  display: block;
+}
+
+/* Responsive - Tablet */
+@media (min-width: 768px) and (max-width: 1024px) {
+  .btn-shutter {
+    width: 100px;
+    height: 100px;
+  }
+  
+  .shutter-outer {
+    width: 100px;
+    height: 100px;
+    border-width: 5px;
+  }
+  
+  .shutter-inner {
+    width: 75px;
+    height: 75px;
+  }
+  
+  .btn-gallery,
+  .btn-switch {
+    width: 64px;
+    height: 64px;
+  }
+}
+
+/* Landscape Mode */
+@media (orientation: landscape) and (max-height: 600px) {
+  .camera-top-controls {
+    padding: var(--space-3) var(--space-5);
+  }
+  
+  .camera-bottom-controls {
+    padding: var(--space-5);
+  }
+  
+  .btn-shutter {
+    width: 64px;
+    height: 64px;
+  }
+  
+  .shutter-outer {
+    width: 64px;
+    height: 64px;
+  }
+  
+  .shutter-inner {
+    width: 48px;
+    height: 48px;
+  }
+  
+  .btn-gallery,
+  .btn-switch {
+    width: 48px;
+    height: 48px;
+  }
+}
+
+/* PWA Standalone Mode */
+@media (display-mode: standalone) {
+  .camera-top-controls {
+    padding-top: env(safe-area-inset-top, 44px);
+  }
+}
+
+/* Accessibility */
+@media (prefers-reduced-motion: reduce) {
+  .camera-capture * {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}
+
+/* High Contrast Mode */
+@media (prefers-contrast: high) {
+  .btn-close,
+  .btn-flash,
+  .btn-gallery,
+  .btn-switch {
+    border-width: 2px;
+  }
+  
+  .shutter-outer {
+    border-width: 5px;
+  }
+}

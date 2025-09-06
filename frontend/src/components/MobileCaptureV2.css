@@ -1,0 +1,498 @@
+/* Mobile Capture V2 - Clean iOS Style */
+
+.mobile-capture-v2 {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  height: 100vh;
+  height: 100dvh;
+  background: var(--bg-dark-primary);
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+}
+
+/* Header */
+.capture-header {
+  background: var(--bg-card);
+  border-bottom: 1px solid var(--border-default);
+  padding: var(--space-4);
+  padding-top: max(env(safe-area-inset-top), var(--space-4));
+  flex-shrink: 0;
+  z-index: 100;
+}
+
+.header-top {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: var(--space-3);
+}
+
+.capture-header h2 {
+  margin: 0;
+  font-size: var(--text-xl);
+  color: var(--text-primary);
+}
+
+/* Camera Mode Toggle */
+.camera-mode-toggle {
+  display: flex;
+  background: var(--bg-card-hover);
+  border-radius: var(--radius-md);
+  overflow: hidden;
+  border: 1px solid var(--border-default);
+}
+
+.camera-mode-toggle button {
+  padding: var(--space-2) var(--space-3);
+  background: transparent;
+  border: none;
+  color: var(--text-secondary);
+  font-size: var(--text-sm);
+  font-weight: var(--font-medium);
+  cursor: pointer;
+  transition: all var(--transition-base) var(--ease-in-out);
+}
+
+.camera-mode-toggle button.active {
+  background: var(--accent-gradient);
+  color: white;
+}
+
+/* Session Stats */
+.session-stats {
+  display: flex;
+  gap: 16px;
+  font-size: 0.875rem;
+}
+
+.session-stats .stat {
+  color: var(--text-secondary);
+}
+
+.session-stats .stat strong {
+  color: var(--accent-primary);
+}
+
+/* Main Actions */
+.main-actions {
+  padding: 24px 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  background: var(--background-secondary);
+  margin: 16px;
+  border-radius: 16px;
+  border: 1px solid var(--border);
+}
+
+/* Main Camera Button */
+.btn-camera-main {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 16px;
+  padding: 20px;
+  background: var(--accent-gradient);
+  border: none;
+  border-radius: 16px;
+  color: white;
+  font-size: 1.125rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  box-shadow: 0 4px 12px rgba(99, 102, 241, 0.3);
+}
+
+.btn-camera-main:active {
+  transform: scale(0.98);
+}
+
+.camera-icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* Secondary Actions */
+.secondary-actions {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+}
+
+.btn-new-product,
+.btn-gallery {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  padding: 14px;
+  background: var(--glass);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  color: var(--text-primary);
+  font-size: 0.875rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.btn-new-product:active,
+.btn-gallery:active {
+  transform: scale(0.98);
+  background: var(--background-elevated);
+}
+
+/* Images Section */
+.images-section {
+  flex: 1;
+  padding: 16px 0;
+  overflow: hidden;
+  min-height: 0;
+}
+
+.images-section h3 {
+  color: var(--text-primary);
+  font-size: 1rem;
+  margin: 0 0 16px 0;
+  padding: 0 16px;
+}
+
+/* Horizontal Scroll Container */
+.products-scroll-container {
+  position: relative;
+  margin: 0 -16px;
+  overflow-x: auto;
+  overflow-y: hidden;
+  -webkit-overflow-scrolling: touch;
+  scroll-snap-type: x mandatory;
+  scroll-behavior: smooth;
+}
+
+/* Scroll Indicators */
+.products-scroll-container::before,
+.products-scroll-container::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  width: 40px;
+  pointer-events: none;
+  z-index: 10;
+}
+
+.products-scroll-container::before {
+  left: 0;
+  background: linear-gradient(to right, var(--background-primary), transparent);
+}
+
+.products-scroll-container::after {
+  right: 0;
+  background: linear-gradient(to left, var(--background-primary), transparent);
+}
+
+.products-scroll {
+  display: flex;
+  gap: 12px;
+  padding: 4px 16px 20px;
+  min-height: 280px;
+}
+
+/* Hide scrollbar but keep functionality */
+.products-scroll-container::-webkit-scrollbar {
+  height: 0;
+  display: none;
+}
+
+/* Product Card */
+.product-card {
+  flex: 0 0 160px;
+  background: var(--background-secondary);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  overflow: hidden;
+  scroll-snap-align: start;
+  display: flex;
+  flex-direction: column;
+  transition: all 0.3s ease;
+}
+
+.product-card:active {
+  transform: scale(0.98);
+}
+
+/* Card Header */
+.card-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 12px;
+  border-bottom: 1px solid var(--border);
+}
+
+.card-header h4 {
+  margin: 0;
+  font-size: 0.875rem;
+  color: var(--text-primary);
+}
+
+.badge {
+  background: var(--accent-gradient);
+  color: white;
+  padding: 2px 8px;
+  border-radius: 12px;
+  font-size: 0.75rem;
+  font-weight: 600;
+}
+
+/* Card Images */
+.card-images {
+  flex: 1;
+  position: relative;
+  background: var(--glass);
+}
+
+.main-image {
+  position: relative;
+  width: 100%;
+  height: 120px;
+  cursor: pointer;
+}
+
+.main-image img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.more-indicator {
+  position: absolute;
+  top: 8px;
+  right: 8px;
+  background: rgba(0, 0, 0, 0.7);
+  backdrop-filter: blur(10px);
+  color: white;
+  padding: 4px 10px;
+  border-radius: 12px;
+  font-size: 0.875rem;
+  font-weight: 600;
+}
+
+/* Thumbnails */
+.thumbnails {
+  display: flex;
+  gap: 2px;
+  padding: 2px;
+  background: var(--background-primary);
+}
+
+.thumbnails img {
+  flex: 1;
+  height: 40px;
+  object-fit: cover;
+  border-radius: 4px;
+}
+
+/* Card Actions */
+.card-actions {
+  display: flex;
+  gap: 8px;
+  padding: 12px;
+  border-top: 1px solid var(--border);
+}
+
+.btn-edit {
+  flex: 1;
+  padding: 8px;
+  background: var(--glass);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  color: var(--text-primary);
+  font-size: 0.75rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.btn-edit:active {
+  background: var(--accent-primary);
+  color: white;
+}
+
+.btn-delete {
+  width: 32px;
+  height: 32px;
+  background: rgba(239, 68, 68, 0.1);
+  border: 1px solid rgba(239, 68, 68, 0.3);
+  border-radius: 8px;
+  color: #EF4444;
+  font-size: 20px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.btn-delete:active {
+  background: rgba(239, 68, 68, 0.2);
+}
+
+/* Add New Card */
+.product-card.add-card {
+  background: var(--glass);
+  border: 2px dashed var(--border);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  cursor: pointer;
+  color: var(--text-secondary);
+  transition: all 0.3s ease;
+}
+
+.product-card.add-card:hover {
+  border-color: var(--accent-primary);
+  color: var(--accent-primary);
+  background: var(--background-secondary);
+}
+
+.add-icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.product-card.add-card span {
+  font-size: 0.875rem;
+  font-weight: 500;
+}
+
+/* Bottom Actions */
+.bottom-actions {
+  padding: 16px;
+  padding-bottom: max(env(safe-area-inset-bottom), 16px);
+  background: var(--background-secondary);
+  border-top: 1px solid var(--border);
+  display: flex;
+  gap: 12px;
+  flex-shrink: 0;
+}
+
+.btn-clear {
+  flex: 1;
+  padding: 14px;
+  background: var(--glass);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  color: var(--text-secondary);
+  font-size: 0.875rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.btn-clear:active {
+  background: rgba(239, 68, 68, 0.1);
+  border-color: #EF4444;
+  color: #EF4444;
+}
+
+.btn-upload {
+  flex: 2;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  padding: 14px;
+  background: var(--accent-gradient);
+  border: none;
+  border-radius: 12px;
+  color: white;
+  font-size: 0.875rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  box-shadow: 0 2px 8px rgba(99, 102, 241, 0.3);
+}
+
+.btn-upload:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.btn-upload:not(:disabled):active {
+  transform: scale(0.98);
+}
+
+/* Toast Notification */
+.toast-notification {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  padding: 16px 32px;
+  background: var(--accent-gradient);
+  color: white;
+  font-size: 1.125rem;
+  font-weight: 600;
+  border-radius: 12px;
+  box-shadow: 0 8px 24px rgba(99, 102, 241, 0.4);
+  z-index: 10000;
+  animation: toast-in 0.3s ease;
+}
+
+@keyframes toast-in {
+  from {
+    opacity: 0;
+    transform: translate(-50%, -50%) scale(0.8);
+  }
+  to {
+    opacity: 1;
+    transform: translate(-50%, -50%) scale(1);
+  }
+}
+
+/* iPhone 16 Pro specific (393 x 852) */
+@media screen and (width: 393px) and (height: 852px) {
+  .capture-header {
+    padding-top: max(59px, env(safe-area-inset-top));
+  }
+  
+  .bottom-actions {
+    padding-bottom: max(34px, env(safe-area-inset-bottom));
+  }
+}
+
+/* Responsive */
+@media (max-width: 400px) {
+  .product-card {
+    flex: 0 0 140px;
+  }
+  
+  .main-image {
+    height: 100px;
+  }
+}
+
+@media (min-width: 768px) {
+  .product-card {
+    flex: 0 0 280px;
+  }
+  
+  .main-image {
+    height: 200px;
+  }
+}
+
+/* iOS Specific */
+@supports (-webkit-touch-callout: none) {
+  .btn-remove {
+    opacity: 1; /* Always visible on iOS */
+  }
+}

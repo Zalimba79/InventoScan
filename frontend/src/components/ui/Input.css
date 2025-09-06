@@ -1,0 +1,226 @@
+/* Input Component Styles - Design System Implementation */
+
+.input-wrapper {
+  display: inline-flex;
+  flex-direction: column;
+  gap: var(--space-2);
+  position: relative;
+}
+
+.input-wrapper-full {
+  width: 100%;
+}
+
+/* Label */
+.input-label {
+  font-size: var(--text-sm);
+  font-weight: var(--font-medium);
+  color: var(--text-secondary);
+  display: block;
+}
+
+.input-wrapper-error .input-label {
+  color: var(--error);
+}
+
+/* Container for icon support */
+.input-container {
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+
+/* Input Base */
+.input {
+  width: 100%;
+  font-family: var(--font-primary);
+  font-size: var(--text-base);
+  color: var(--text-primary);
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid var(--border-default);
+  border-radius: var(--radius-md);
+  padding: var(--space-3) var(--space-4);
+  transition: all var(--transition-base) var(--ease-in-out);
+  outline: none;
+  -webkit-tap-highlight-color: transparent;
+}
+
+/* Variants */
+.input-default {
+  background: rgba(255, 255, 255, 0.05);
+}
+
+.input-filled {
+  background: var(--bg-card);
+  border-color: transparent;
+}
+
+.input-outlined {
+  background: transparent;
+  border-color: var(--border-purple);
+}
+
+/* With Icons */
+.input-with-icon-left {
+  padding-left: calc(var(--space-10) + var(--space-2));
+}
+
+.input-with-icon-right {
+  padding-right: calc(var(--space-10) + var(--space-2));
+}
+
+/* Icon Styles */
+.input-icon {
+  position: absolute;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--text-tertiary);
+  pointer-events: none;
+  width: var(--space-5);
+  height: var(--space-5);
+}
+
+.input-icon-left {
+  left: var(--space-3);
+}
+
+.input-icon-right {
+  right: var(--space-3);
+}
+
+/* States */
+.input:hover:not(:disabled) {
+  border-color: var(--border-hover);
+  background: rgba(255, 255, 255, 0.08);
+}
+
+.input:focus {
+  border-color: var(--primary-purple);
+  background: rgba(255, 255, 255, 0.08);
+  box-shadow: 0 0 0 3px rgba(141, 123, 251, 0.1);
+}
+
+.input-filled:focus {
+  background: var(--bg-card-hover);
+  border-color: var(--primary-purple);
+}
+
+.input:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+  background: var(--bg-dark-tertiary);
+}
+
+.input::placeholder {
+  color: var(--text-muted);
+}
+
+/* Error State */
+.input-error,
+.input-error:hover,
+.input-error:focus {
+  border-color: var(--error);
+  box-shadow: 0 0 0 3px rgba(239, 68, 68, 0.1);
+}
+
+.input-error-text {
+  font-size: var(--text-sm);
+  color: var(--error);
+  display: flex;
+  align-items: center;
+  gap: var(--space-1);
+}
+
+/* Helper Text */
+.input-helper-text {
+  font-size: var(--text-sm);
+  color: var(--text-tertiary);
+}
+
+/* Textarea Specific */
+.textarea {
+  min-height: calc(var(--space-20) + var(--space-6));
+  padding: var(--space-3) var(--space-4);
+  line-height: var(--leading-normal);
+}
+
+.textarea-resize-none {
+  resize: none;
+}
+
+.textarea-resize-vertical {
+  resize: vertical;
+}
+
+.textarea-resize-horizontal {
+  resize: horizontal;
+}
+
+.textarea-resize-both {
+  resize: both;
+}
+
+/* Autofill Styles */
+.input:-webkit-autofill,
+.input:-webkit-autofill:hover,
+.input:-webkit-autofill:focus {
+  -webkit-text-fill-color: var(--text-primary);
+  -webkit-box-shadow: 0 0 0px 1000px var(--bg-card) inset;
+  transition: background-color 5000s ease-in-out 0s;
+}
+
+/* Number Input - Hide Spinners */
+.input[type="number"]::-webkit-inner-spin-button,
+.input[type="number"]::-webkit-outer-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+.input[type="number"] {
+  -moz-appearance: textfield;
+}
+
+/* Search Input - Clear Button */
+.input[type="search"]::-webkit-search-decoration,
+.input[type="search"]::-webkit-search-cancel-button,
+.input[type="search"]::-webkit-search-results-button,
+.input[type="search"]::-webkit-search-results-decoration {
+  -webkit-appearance: none;
+}
+
+/* File Input */
+.input[type="file"] {
+  padding: var(--space-2) var(--space-3);
+  cursor: pointer;
+}
+
+.input[type="file"]::file-selector-button {
+  padding: var(--space-2) var(--space-4);
+  margin-right: var(--space-3);
+  background: var(--gradient-purple);
+  color: var(--text-primary);
+  border: none;
+  border-radius: var(--radius-md);
+  font-weight: var(--font-medium);
+  cursor: pointer;
+  transition: all var(--transition-base) var(--ease-in-out);
+}
+
+.input[type="file"]::file-selector-button:hover {
+  transform: translateY(-1px);
+  box-shadow: var(--shadow-md);
+}
+
+/* Focus Visible */
+.input:focus-visible {
+  outline: 2px solid var(--primary-purple);
+  outline-offset: 2px;
+}
+
+/* Responsive */
+@media (max-width: 640px) {
+  .input {
+    font-size: 16px; /* Prevent zoom on iOS */
+  }
+}

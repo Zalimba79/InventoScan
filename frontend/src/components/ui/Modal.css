@@ -1,0 +1,235 @@
+/* Modal Component Styles - Design System Implementation */
+
+.modal-backdrop {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(17, 9, 34, 0.8);
+  backdrop-filter: var(--blur-md);
+  -webkit-backdrop-filter: var(--blur-md);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: var(--z-modal);
+  padding: var(--space-6);
+  animation: fadeIn var(--transition-fast) var(--ease-out);
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+.modal {
+  background: var(--bg-card);
+  border: 1px solid var(--border-purple);
+  border-radius: var(--radius-2xl);
+  box-shadow: var(--shadow-xl);
+  display: flex;
+  flex-direction: column;
+  max-height: calc(100vh - var(--space-12));
+  animation: slideUp var(--transition-base) var(--ease-out);
+  position: relative;
+}
+
+@keyframes slideUp {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Modal Sizes */
+.modal-sm {
+  width: 100%;
+  max-width: 400px;
+}
+
+.modal-md {
+  width: 100%;
+  max-width: 600px;
+}
+
+.modal-lg {
+  width: 100%;
+  max-width: 800px;
+}
+
+.modal-xl {
+  width: 100%;
+  max-width: 1200px;
+}
+
+.modal-full {
+  width: calc(100vw - var(--space-12));
+  height: calc(100vh - var(--space-12));
+  max-width: none;
+}
+
+/* Modal Header */
+.modal-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: var(--space-6);
+  border-bottom: 1px solid var(--border-default);
+  flex-shrink: 0;
+}
+
+.modal-title {
+  font-size: var(--text-2xl);
+  font-weight: var(--font-semibold);
+  color: var(--text-primary);
+  margin: 0;
+}
+
+.modal-close {
+  width: 40px;
+  height: 40px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: transparent;
+  border: 1px solid var(--border-default);
+  border-radius: var(--radius-full);
+  color: var(--text-secondary);
+  cursor: pointer;
+  transition: all var(--transition-base) var(--ease-in-out);
+  flex-shrink: 0;
+  margin-left: var(--space-4);
+}
+
+.modal-close:hover {
+  background: var(--bg-card-hover);
+  border-color: var(--border-purple);
+  color: var(--text-primary);
+  transform: rotate(90deg);
+}
+
+.modal-close:active {
+  transform: rotate(90deg) scale(0.9);
+}
+
+/* Modal Body */
+.modal-body {
+  padding: var(--space-6);
+  overflow-y: auto;
+  flex: 1;
+  color: var(--text-primary);
+}
+
+/* Modal Footer */
+.modal-footer {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: var(--space-3);
+  padding: var(--space-6);
+  border-top: 1px solid var(--border-default);
+  flex-shrink: 0;
+}
+
+/* Dialog Styles */
+.dialog {
+  text-align: center;
+  padding: var(--space-4);
+}
+
+.dialog-icon {
+  font-size: 3rem;
+  margin-bottom: var(--space-4);
+}
+
+.dialog-icon-info {
+  filter: drop-shadow(0 0 20px rgba(59, 130, 246, 0.5));
+}
+
+.dialog-icon-warning {
+  filter: drop-shadow(0 0 20px rgba(251, 191, 36, 0.5));
+}
+
+.dialog-icon-danger {
+  filter: drop-shadow(0 0 20px rgba(239, 68, 68, 0.5));
+}
+
+.dialog-icon-success {
+  filter: drop-shadow(0 0 20px rgba(74, 222, 128, 0.5));
+}
+
+.dialog-title {
+  font-size: var(--text-xl);
+  font-weight: var(--font-semibold);
+  color: var(--text-primary);
+  margin: 0 0 var(--space-3) 0;
+}
+
+.dialog-message {
+  font-size: var(--text-base);
+  color: var(--text-secondary);
+  line-height: var(--leading-relaxed);
+  margin: 0 0 var(--space-6) 0;
+}
+
+.dialog-actions {
+  display: flex;
+  gap: var(--space-3);
+  justify-content: center;
+}
+
+/* Responsive */
+@media (max-width: 640px) {
+  .modal-backdrop {
+    padding: var(--space-4);
+  }
+
+  .modal {
+    max-height: calc(100vh - var(--space-8));
+  }
+
+  .modal-header,
+  .modal-body,
+  .modal-footer {
+    padding: var(--space-4);
+  }
+
+  .modal-title {
+    font-size: var(--text-xl);
+  }
+
+  .modal-full {
+    width: calc(100vw - var(--space-8));
+    height: calc(100vh - var(--space-8));
+  }
+
+  .dialog-actions {
+    flex-direction: column;
+    width: 100%;
+  }
+
+  .dialog-actions .btn {
+    width: 100%;
+  }
+}
+
+/* Prevent body scroll when modal is open */
+body.modal-open {
+  overflow: hidden;
+}
+
+/* Accessibility */
+@media (prefers-reduced-motion: reduce) {
+  .modal-backdrop,
+  .modal {
+    animation: none;
+  }
+}
