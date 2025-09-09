@@ -181,6 +181,80 @@ export const getCSPHeader = (): string => {
   ].join('; ');
 };
 
+/**
+ * Sanitize product code for safe display
+ * @param code - Product code to sanitize
+ * @returns Sanitized product code
+ */
+export const sanitizeProductCode = (code: string): string => {
+  if (!code) return '';
+  // Allow only alphanumeric characters, hyphens, and underscores
+  return code.replace(/[^a-zA-Z0-9-_]/g, '');
+};
+
+/**
+ * Create safe HTML content
+ * @param html - HTML string to make safe
+ * @returns Safe HTML object for dangerouslySetInnerHTML
+ */
+export const createSafeHtml = (html: string): { __html: string } => {
+  return { __html: escapeHtml(html) };
+};
+
+/**
+ * Create safe image properties
+ * @param src - Image source URL
+ * @param alt - Alt text for image
+ * @returns Safe image properties
+ */
+export const createSafeImageProps = (src: string, alt: string): { src: string; alt: string } => {
+  // Validate and sanitize image URL
+  const safeSrc = validateImageUrl(src) ? src : '/placeholder-image.svg';
+  const safeAlt = escapeString(alt);
+  
+  return {
+    src: safeSrc,
+    alt: safeAlt
+  };
+};
+
+/**
+ * Validate image URL
+ * @param url - URL to validate
+ * @returns true if URL is valid for images
+ */
+export const validateImageUrl = (url: string): boolean => {
+  if (!url) return false;
+  
+  try {
+    const parsedUrl = new URL(url, window.location.origin);
+    
+    // Check if it's a data URL (base64 image)
+    if (url.startsWith('data:image/')) {
+      return true;
+    }
+    
+    // Check if it's a blob URL
+    if (url.startsWith('blob:')) {
+      return true;
+    }
+    
+    // Check if it's a local file or http(s) URL
+    const validProtocols = ['http:', 'https:', 'file:'];
+    if (!validProtocols.includes(parsedUrl.protocol)) {
+      return false;
+    }
+    
+    // Check for common image extensions
+    const validExtensions = ['.jpg', '.jpeg', '.png', '.gif', '.webp', '.svg', '.ico'];
+    const pathname = parsedUrl.pathname.toLowerCase();
+    
+    return validExtensions.some(ext => pathname.endsWith(ext));
+  } catch {
+    return false;
+  }
+};
+
 export default {
   sanitizeInput,
   validateEmail,
@@ -192,5 +266,9 @@ export default {
   detectXSSPatterns,
   sanitizeFileName,
   checkRateLimit,
-  getCSPHeader
+  getCSPHeader,
+  sanitizeProductCode,
+  createSafeHtml,
+  createSafeImageProps,
+  validateImageUrl
 };
