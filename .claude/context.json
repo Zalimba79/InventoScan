@@ -1,0 +1,235 @@
+{
+  "project": {
+    "name": "InventoScan",
+    "description": "Vollständige Inventory-Management-Lösung mit KI-gestützter Produkterkennung und Multi-Channel Marketplace Integration (eBay/Amazon)",
+    "version": "1.0.0",
+    "startDate": "2025-01-07",
+    "lastUpdate": "2025-09-07T10:15:46+02:00"
+  },
+  "currentState": {
+    "phase": "production-ready",
+    "activeTask": "Performance-Optimierung und Testing",
+    "completedTasks": [
+      "Design System Implementation (141 CSS Variablen)",
+      "Dashboard UI Components (50+ Komponenten)",
+      "Database Schema Migration (80+ Felder)",
+      "Context System Setup",
+      "React Grid Layout Dashboard (Drag & Drop)",
+      "OpenAI Vision Integration",
+      "Marketplace APIs (eBay/Amazon)",
+      "Mobile Camera Integration (4 Implementierungen)",
+      "Multi-Channel Export System",
+      "Responsive Design System",
+      "Docker Infrastructure Setup",
+      "42 Backend API Endpoints",
+      "UI Component Library (9 Base Components)",
+      "Session-based Upload System",
+      "Stock Management System",
+      "Dashboard Analytics & Reporting",
+      "Cloudflare Tunnel Basic Setup"
+    ],
+    "pendingTasks": [
+      "Performance-Optimierung für große Datenmengen",
+      "Erweiterte Cloudflare Tunnel Konfiguration",
+      "iPhone-spezifische Camera Optimierungen",
+      "Unit Tests schreiben",
+      "E2E Tests implementieren",
+      "Backup & Recovery System",
+      "User Authentication & Permissions",
+      "Multi-Tenant Erweiterungen",
+      "Advanced Analytics Dashboard",
+      "Webhook Integration für Marketplace",
+      "Batch-Processing Optimierung"
+    ],
+    "blockers": [],
+    "activeFeatures": {
+      "aiProductRecognition": true,
+      "marketplaceIntegration": true,
+      "mobileCamera": true,
+      "dragDropDashboard": true,
+      "designSystem": true,
+      "dockerized": true
+    }
+  },
+  "technicalContext": {
+    "stack": [
+      "React 18",
+      "TypeScript (Strict Mode)",
+      "Vite",
+      "FastAPI",
+      "PostgreSQL",
+      "Docker Compose",
+      "SQLAlchemy ORM",
+      "React Grid Layout",
+      "OpenAI Vision API"
+    ],
+    "dependencies": {
+      "frontend": {
+        "core": "React 18, Vite, TypeScript",
+        "ui": "React Grid Layout, Recharts, Lucide-React",
+        "state": "React Hooks, LocalStorage",
+        "styling": "CSS Custom Properties, CSS Modules"
+      },
+      "backend": {
+        "framework": "FastAPI, Uvicorn",
+        "database": "SQLAlchemy, psycopg2",
+        "ai": "OpenAI, Pillow",
+        "validation": "Pydantic",
+        "fileHandling": "python-multipart"
+      },
+      "infrastructure": {
+        "containers": "Docker Compose",
+        "database": "PostgreSQL 15",
+        "tunnel": "Cloudflare Tunnel",
+        "volumes": "Backend uploads, DB data"
+      }
+    },
+    "environment": {
+      "development": {
+        "frontend": "localhost:5173",
+        "backend": "localhost:8001",
+        "database": "localhost:5432",
+        "hotReload": true
+      },
+      "production": {
+        "cloudflare": "Tunnel configured",
+        "ssl": "HTTPS enabled",
+        "cors": "Multi-origin support"
+      }
+    },
+    "apis": {
+      "core": {
+        "upload": "/api/upload",
+        "analyze": "/api/analyze/{image_id}",
+        "batch": "/api/batch-upload",
+        "health": "/api/health"
+      },
+      "inventory": {
+        "products": "/api/inventory/products",
+        "dashboard": "/api/inventory/dashboard/stats",
+        "stockMovement": "/api/inventory/products/{id}/stock-movement",
+        "search": "/api/inventory/products/search"
+      },
+      "marketplace": {
+        "complete": "/api/marketplace/products/complete",
+        "validate": "/api/marketplace/products/{id}/validate",
+        "export": "/api/marketplace/export/{marketplace}/{id}",
+        "bulkExport": "/api/marketplace/export/{marketplace}/bulk",
+        "categories": "/api/marketplace/categories/{marketplace}"
+      }
+    },
+    "database": {
+      "tables": [
+        "products (80+ columns)",
+        "product_images",
+        "stock_movements",
+        "listing_history"
+      ],
+      "migrations": [
+        "init.sql",
+        "migrate_to_marketplace.sql"
+      ],
+      "features": {
+        "uuid": "Primary keys",
+        "jsonb": "Custom fields",
+        "triggers": "Updated_at timestamps",
+        "indexes": "Performance optimized"
+      }
+    },
+    "kritischeEntscheidungen": [
+      {
+        "date": "2025-01-07",
+        "decision": "Design System mit CSS Custom Properties statt Styled Components",
+        "reason": "Bessere Performance und einfachere Wartung"
+      },
+      {
+        "date": "2025-01-07",
+        "decision": "Marketplace als separate API-Struktur implementiert",
+        "reason": "Skalierbarkeit und Modularität"
+      },
+      {
+        "date": "2025-01-07",
+        "decision": "React Grid Layout für Dashboard",
+        "reason": "Beste User Experience mit Drag & Drop"
+      },
+      {
+        "date": "2025-01-07",
+        "decision": "UUID statt Auto-Increment IDs",
+        "reason": "Bessere Skalierbarkeit und Sync-Möglichkeiten"
+      },
+      {
+        "date": "2025-01-07",
+        "decision": "Session-based Upload System",
+        "reason": "Batch-Processing und bessere UX"
+      }
+    ]
+  },
+  "features": {
+    "implemented": {
+      "productManagement": [
+        "CRUD Operations",
+        "Barcode Support mit Duplikatsprüfung",
+        "Kategorisierung und Standortverwaltung",
+        "Stock Management mit Historie",
+        "Multi-Image Support",
+        "Custom Fields (JSON)",
+        "Erweiterte Suche und Filter"
+      ],
+      "aiFeatures": [
+        "OpenAI Vision Integration",
+        "Automatische Produkterkennung",
+        "Brand/Hersteller Extraktion",
+        "Technische Specs Erkennung",
+        "Compliance Detection (CE, RoHS)",
+        "SEO-optimierte Titel (80/200 Zeichen)",
+        "5 Bullet Points Generation",
+        "Kategorie-Vorschläge",
+        "HS-Code Bestimmung"
+      ],
+      "marketplace": [
+        "eBay CSV Export",
+        "Amazon Flat File Export",
+        "Multi-Channel Pricing",
+        "Bulk Operations",
+        "Validierung pro Marketplace",
+        "Listing Status Tracking",
+        "Kategorie Mapping"
+      ],
+      "ui": [
+        "Drag & Drop Dashboard",
+        "6 Dashboard Cards",
+        "Edit Mode",
+        "Persistent Layout Storage",
+        "Responsive Design",
+        "Dark Theme",
+        "Component Gallery",
+        "Mobile Optimierung"
+      ],
+      "camera": [
+        "Native Browser API",
+        "Mobile-optimierte Versionen",
+        "Sound Feedback",
+        "Batch Upload",
+        "Session Management",
+        "Auto-Analyse nach Upload"
+      ]
+    },
+    "statistics": {
+      "backendEndpoints": 42,
+      "frontendComponents": 50,
+      "databaseFields": 80,
+      "cssVariables": 141,
+      "dockerContainers": 3,
+      "apiModules": 3,
+      "uiBaseComponents": 9,
+      "dashboardCards": 6,
+      "marketplaceChannels": 2
+    }
+  },
+  "checkpoints": {
+    "latest": "2025-01-07T10:00:00",
+    "autoSave": true,
+    "interval": "after_major_changes",
+    "lastAnalysis": "Complete project analysis performed"
+  }
+}

@@ -1,0 +1,194 @@
+/* ProductToolbar Component */
+@import url('../../styles/design-tokens.css');
+
+.product-toolbar {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+  padding: var(--space-2) var(--space-3);
+  background: var(--glass-light, rgba(255, 255, 255, 0.1));
+  backdrop-filter: blur(10px);
+  border-radius: var(--radius-xl);
+  border: 1px solid var(--border-default);
+  margin-bottom: var(--space-8);
+}
+
+.product-toolbar-search {
+  display: flex;
+  align-items: center;
+}
+
+.product-toolbar-select,
+.product-toolbar-analyze {
+  display: flex;
+  align-items: center;
+}
+
+.product-toolbar-spacer {
+  flex: 1;
+}
+
+.product-toolbar-view {
+  display: flex;
+  align-items: center;
+}
+
+/* Search Box */
+.product-toolbar .search-box {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+  background: var(--bg-dark-secondary);
+  border: 1px solid var(--border-default);
+  border-radius: var(--radius-lg);
+  padding: var(--space-2) var(--space-3);
+  min-width: 200px;
+  transition: all var(--transition-base);
+}
+
+.product-toolbar .search-box:focus-within {
+  border-color: var(--primary-purple);
+  box-shadow: 0 0 0 2px rgba(157, 126, 248, 0.1);
+}
+
+.product-toolbar .search-box svg {
+  width: 18px;
+  height: 18px;
+  color: var(--text-secondary);
+  flex-shrink: 0;
+}
+
+.product-toolbar .search-input {
+  flex: 1;
+  background: transparent;
+  border: none;
+  outline: none;
+  color: var(--text-primary);
+  font-size: var(--text-sm);
+  padding: 0;
+  font-family: var(--font-primary);
+}
+
+.product-toolbar .search-input::placeholder {
+  color: var(--text-tertiary);
+}
+
+/* Select All Button */
+.product-toolbar .select-all-btn {
+  padding: var(--space-2) var(--space-4);
+  background: var(--bg-dark-secondary);
+  border: 1px solid var(--border-default);
+  border-radius: var(--radius-lg);
+  color: var(--text-secondary);
+  font-size: var(--text-sm);
+  font-weight: var(--font-medium);
+  cursor: pointer;
+  transition: all var(--transition-base);
+  white-space: nowrap;
+  font-family: var(--font-primary);
+}
+
+.product-toolbar .select-all-btn:hover {
+  background: var(--bg-dark-tertiary);
+  color: var(--text-primary);
+  border-color: var(--purple-600);
+}
+
+.product-toolbar .select-all-btn.selected {
+  background: var(--purple-600);
+  color: white;
+  border-color: var(--purple-600);
+}
+
+/* Analyze Button */
+.product-toolbar .analyze-btn {
+  padding: var(--space-2) var(--space-4);
+  background: var(--purple-600);
+  border: 1px solid var(--purple-600);
+  border-radius: var(--radius-lg);
+  color: white;
+  font-size: var(--text-sm);
+  font-weight: var(--font-medium);
+  cursor: pointer;
+  transition: all var(--transition-base);
+  white-space: nowrap;
+  font-family: var(--font-primary);
+}
+
+.product-toolbar .analyze-btn:hover {
+  background: var(--purple-700);
+  border-color: var(--purple-700);
+}
+
+/* View Toggle */
+.product-toolbar .view-toggle {
+  display: flex;
+  gap: 0;
+  background: var(--bg-dark-secondary);
+  border: 1px solid var(--border-default);
+  border-radius: var(--radius-lg);
+  overflow: hidden;
+}
+
+.product-toolbar .view-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: var(--space-2) var(--space-3);
+  background: transparent;
+  border: none;
+  color: var(--text-secondary);
+  cursor: pointer;
+  transition: all var(--transition-base);
+  position: relative;
+}
+
+.product-toolbar .view-btn:not(:last-child) {
+  border-right: 1px solid var(--border-default);
+}
+
+.product-toolbar .view-btn:hover {
+  background: var(--bg-dark-tertiary);
+  color: var(--text-primary);
+}
+
+.product-toolbar .view-btn.active {
+  background: #8B5EE6 !important;
+  color: white;
+}
+
+.product-toolbar .view-btn svg {
+  width: 18px;
+  height: 18px;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .product-toolbar {
+    flex-wrap: wrap;
+    gap: var(--space-2);
+    padding: var(--space-2);
+  }
+  
+  .product-toolbar-search {
+    width: 100%;
+  }
+  
+  .product-toolbar .search-box {
+    width: 100%;
+  }
+  
+  .product-toolbar-spacer {
+    display: none;
+  }
+  
+  .product-toolbar-select,
+  .product-toolbar-analyze {
+    flex: 1;
+  }
+  
+  .product-toolbar .select-all-btn,
+  .product-toolbar .analyze-btn {
+    width: 100%;
+  }
+}

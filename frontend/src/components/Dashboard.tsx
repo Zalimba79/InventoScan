@@ -1,4 +1,13 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect, useRef, useCallback } from 'react';
+import { DesignComponents } from './DesignComponents';
+import MarketplacePanel from './MarketplacePanel';
+import { getCardContent, getCardIcon } from './DashboardCards';
+import { UploadCenter } from './UploadCenter';
+import { ProductDrafts } from './ProductDrafts';
+import { Administration } from './Administration';
+import { LayoutDemo } from './LayoutDemo';
+import { BasePage } from './layout/BasePage';
+import { PageBuilder } from './PageBuilder';
 import '../styles/design-tokens.css';
 import './Dashboard.css';
 
@@ -37,12 +46,6 @@ const SettingsIcon = () => (
   </svg>
 );
 
-const PlusIcon = () => (
-  <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-    <line x1="12" y1="5" x2="12" y2="19"></line>
-    <line x1="5" y1="12" x2="19" y2="12"></line>
-  </svg>
-);
 
 const CameraIcon = () => (
   <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
@@ -66,12 +69,6 @@ const ChartIcon = () => (
   </svg>
 );
 
-const SearchIcon = () => (
-  <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-    <circle cx="11" cy="11" r="8"></circle>
-    <path d="m21 21-4.35-4.35"></path>
-  </svg>
-);
 
 const UserIcon = () => (
   <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
@@ -84,6 +81,14 @@ const BellIcon = () => (
   <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
     <path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"></path>
     <path d="M13.73 21a2 2 0 0 1-3.46 0"></path>
+  </svg>
+);
+
+const ShoppingBagIcon = () => (
+  <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+    <path d="M6 2L3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"></path>
+    <line x1="3" y1="6" x2="21" y2="6"></line>
+    <path d="M16 10a4 4 0 0 1-8 0"></path>
   </svg>
 );
 
@@ -104,33 +109,246 @@ const EyeIcon = () => (
   </svg>
 );
 
+const LayersIcon = () => (
+  <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+    <polygon points="12 2 2 7 12 12 22 7 12 2" />
+    <polyline points="2 17 12 22 22 17" />
+    <polyline points="2 12 12 17 22 12" />
+  </svg>
+);
+
+const DraftsIcon = () => (
+  <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+    <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
+    <polyline points="14 2 14 8 20 8"></polyline>
+    <line x1="16" y1="13" x2="8" y2="13"></line>
+    <line x1="16" y1="17" x2="8" y2="17"></line>
+    <polyline points="10 9 9 9 8 9"></polyline>
+  </svg>
+);
+
+const EditIcon = () => (
+  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+    <path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7" />
+    <path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z" />
+  </svg>
+);
+
+
+const CloseIcon = () => (
+  <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+    <line x1="18" y1="6" x2="6" y2="18" />
+    <line x1="6" y1="6" x2="18" y2="18" />
+  </svg>
+);
+
+const AdminIcon = () => (
+  <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+    <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path>
+    <path d="M9 12l2 2 4-4" />
+  </svg>
+);
+
 export const Dashboard: React.FC = () => {
   const [sidebarExpanded, setSidebarExpanded] = useState(false);
   const [activeNav, setActiveNav] = useState('questionnaire');
   const [currentView, setCurrentView] = useState('dashboard');
+  const [activeTab, setActiveTab] = useState('overview');
+  const [editMode, setEditMode] = useState(false);
+  const [gridWidth, setGridWidth] = useState(1200);
+  const gridContainerRef = useRef<HTMLDivElement>(null);
+
+  // Grid Layout configuration - nutzt jetzt die volle Breite (12 Spalten)
+  const [layout, setLayout] = useState([
+    { i: 'value-overview', x: 0, y: 0, w: 4, h: 3, minW: 2, minH: 2 },
+    { i: 'daily-capture', x: 4, y: 0, w: 4, h: 3, minW: 3, minH: 2 },
+    { i: 'recent-scans', x: 8, y: 0, w: 4, h: 4, minW: 3, minH: 3 },
+    { i: 'categories', x: 0, y: 3, w: 4, h: 4, minW: 2, minH: 3 },
+    { i: 'activity', x: 4, y: 3, w: 4, h: 3, minW: 3, minH: 2 },
+    { i: 'tasks', x: 4, y: 6, w: 8, h: 3, minW: 3, minH: 2 },
+  ]);
+
+  const cardData = {
+    'value-overview': { title: 'Wert-Übersicht', visible: true },
+    'daily-capture': { title: 'Heutige Erfassung', visible: true },
+    'recent-scans': { title: 'Letzte Scans', visible: true },
+    'categories': { title: 'Kategorien-Übersicht', visible: true },
+    'activity': { title: 'Scan-Aktivität', visible: true },
+    'tasks': { title: 'Aufgaben & Erinnerungen', visible: true },
+  };
+
+  const [hiddenCards, setHiddenCards] = useState<string[]>([]);
+
+  // Update grid width on resize
+  const updateGridWidth = useCallback(() => {
+    if (gridContainerRef.current) {
+      const containerWidth = gridContainerRef.current.offsetWidth;
+      setGridWidth(containerWidth); // Nutze volle Breite
+    }
+  }, []);
+
+  // Load saved configuration and setup resize observer
+  useEffect(() => {
+    const savedLayout = localStorage.getItem('dashboardGridLayout');
+    const savedHidden = localStorage.getItem('dashboardHiddenCards');
+    
+    if (savedLayout) {
+      try {
+        setLayout(JSON.parse(savedLayout));
+      } catch (e) {
+        console.error('Error loading layout:', e);
+      }
+    }
+    
+    if (savedHidden) {
+      try {
+        setHiddenCards(JSON.parse(savedHidden));
+      } catch (e) {
+        console.error('Error loading hidden cards:', e);
+      }
+    }
+
+    // Initial width calculation
+    updateGridWidth();
+
+    // Setup ResizeObserver
+    const resizeObserver = new ResizeObserver(() => {
+      updateGridWidth();
+    });
+
+    if (gridContainerRef.current) {
+      resizeObserver.observe(gridContainerRef.current);
+    }
+
+    // Window resize fallback
+    window.addEventListener('resize', updateGridWidth);
+
+    return () => {
+      resizeObserver.disconnect();
+      window.removeEventListener('resize', updateGridWidth);
+    };
+  }, [updateGridWidth]);
+
+  // Save configuration
+  const saveConfig = () => {
+    localStorage.setItem('dashboardGridLayout', JSON.stringify(layout));
+    localStorage.setItem('dashboardHiddenCards', JSON.stringify(hiddenCards));
+  };
+
+  // Handle layout change - simplified without GridLayout
+  // const handleLayoutChange = (newLayout: any) => {
+  //   setLayout(newLayout);
+  //   if (!editMode) {
+  //     localStorage.setItem('dashboardGridLayout', JSON.stringify(newLayout));
+  //   }
+  // };
+
+
+  const toggleEditMode = () => {
+    const newEditMode = !editMode;
+    setEditMode(newEditMode);
+    if (!newEditMode) {
+      saveConfig();
+    }
+  };
+
+
+  
+  const toggleCardVisibility = (cardId: string) => {
+    if (hiddenCards.includes(cardId)) {
+      // Show card
+      setHiddenCards(hiddenCards.filter(id => id !== cardId));
+      // Add it back to layout
+      const newLayoutItem = {
+        i: cardId,
+        x: 0,
+        y: 0,
+        w: 4,
+        h: 3,
+        minW: 2,
+        minH: 2
+      };
+      setLayout([...layout, newLayoutItem]);
+    } else {
+      // Hide card
+      setHiddenCards([...hiddenCards, cardId]);
+      setLayout(layout.filter(item => item.i !== cardId));
+    }
+  };
 
   const toggleSidebar = () => {
     setSidebarExpanded(!sidebarExpanded);
   };
 
+  // Render card content based on card ID
+
   const navItems = [
-    { id: 'home', label: 'Home', icon: <HomeIcon /> },
-    { id: 'questionnaire', label: 'Your CDP Questionnaire', icon: <ClipboardIcon />, badge: '+2' },
+    { id: 'home', label: 'Dashboard', icon: <HomeIcon /> },
+    { id: 'upload', label: 'Upload', icon: <CameraIcon /> },
+    { id: 'drafts', label: 'Products', icon: <DraftsIcon /> },
+    { id: 'marketplace', label: 'Marketplace', icon: <ShoppingBagIcon /> },
     { id: 'reports', label: 'Reports', icon: <ChartIcon /> },
-    { id: 'documents', label: 'Documents', icon: <FolderIcon /> },
-    { id: 'background', label: 'Background Preview', icon: <EyeIcon /> },
-    { id: 'design', label: 'Design System', icon: <PaletteIcon /> },
-    { id: 'settings', label: 'Settings', icon: <SettingsIcon /> },
+    { id: 'divider1', isDivider: true },
+    { id: 'design', label: 'Design & UI', icon: <PaletteIcon /> },
+    { id: 'builder', label: 'Page Builder', icon: <LayersIcon />, badge: '🔨' },
+    { id: 'divider2', isDivider: true },
+    { id: 'admin', label: 'Administration', icon: <AdminIcon /> },
   ];
 
   const handleNavClick = (id: string) => {
+    // Ignore dividers
+    if (id.startsWith('divider')) return;
+    
     setActiveNav(id);
-    if (id === 'design') {
-      setCurrentView('design');
-    } else if (id === 'background') {
-      setCurrentView('background');
-    } else {
-      setCurrentView('dashboard');
+    
+    // Map navigation items to views
+    const viewMap: Record<string, string> = {
+      'home': 'dashboard',
+      'upload': 'upload',
+      'drafts': 'drafts',
+      'marketplace': 'marketplace',
+      'reports': 'dashboard', // Reports uses dashboard view for now
+      'design': 'design',
+      'builder': 'builder',
+      'admin': 'admin'
+    };
+    
+    setCurrentView(viewMap[id] || 'dashboard');
+  };
+
+  // Tab configurations for different sections (kept for future use)
+  const getTabsForSection = (section: string) => {
+    switch (section) {
+      case 'marketplace':
+        return [
+          { id: 'overview', label: 'Overview' },
+          { id: 'ebay', label: 'eBay' },
+          { id: 'amazon', label: 'Amazon' },
+        ];
+      case 'reports':
+        return [
+          { id: 'overview', label: 'Overview' },
+          { id: 'sales', label: 'Sales' },
+          { id: 'inventory', label: 'Inventory' },
+          { id: 'analytics', label: 'Analytics' },
+        ];
+      case 'questionnaire':
+        return [
+          { id: 'overview', label: 'Overview' },
+          { id: 'pending', label: 'Pending' },
+          { id: 'completed', label: 'Completed' },
+        ];
+      case 'documents':
+        return [
+          { id: 'overview', label: 'All Documents' },
+          { id: 'invoices', label: 'Invoices' },
+          { id: 'receipts', label: 'Receipts' },
+          { id: 'reports', label: 'Reports' },
+        ];
+      default:
+        return [
+          { id: 'overview', label: 'Overview' },
+        ];
     }
   };
 
@@ -175,25 +393,30 @@ export const Dashboard: React.FC = () => {
         <aside className={`dashboard-sidebar ${sidebarExpanded ? 'expanded' : 'collapsed'}`}>
 
           <nav className="sidebar-nav">
-          {navItems.map(item => (
-            <button
-              key={item.id}
-              className={`nav-item ${activeNav === item.id ? 'active' : ''}`}
-              onClick={() => handleNavClick(item.id)}
-              title={!sidebarExpanded ? item.label : undefined}
-            >
-              <span className="nav-icon">{item.icon}</span>
-              {sidebarExpanded && (
-                <>
-                  <span className="nav-label">{item.label}</span>
-                  {item.badge && <span className="nav-badge">{item.badge}</span>}
-                </>
-              )}
-              {!sidebarExpanded && item.badge && (
-                <span className="nav-badge-dot"></span>
-              )}
-            </button>
-          ))}
+          {navItems.map(item => {
+            if (item.isDivider) {
+              return <div key={item.id} className="nav-divider" />;
+            }
+            return (
+              <button
+                key={item.id}
+                className={`nav-item ${activeNav === item.id ? 'active' : ''}`}
+                onClick={() => handleNavClick(item.id)}
+                title={!sidebarExpanded ? item.label : undefined}
+              >
+                <span className="nav-icon">{item.icon}</span>
+                {sidebarExpanded && (
+                  <>
+                    <span className="nav-label">{item.label}</span>
+                    {item.badge && <span className="nav-badge">{item.badge}</span>}
+                  </>
+                )}
+                {!sidebarExpanded && item.badge && (
+                  <span className="nav-badge-dot"></span>
+                )}
+              </button>
+            );
+          })}
         </nav>
 
         <div className="sidebar-footer">
@@ -214,24 +437,6 @@ export const Dashboard: React.FC = () => {
 
         {/* Main Content Area */}
         <main className="main-content">
-          {/* Search Bar - now inside main content */}
-          <div className="search-section">
-            <div className="search-container">
-              <SearchIcon />
-              <input 
-                type="text" 
-                placeholder="Search by..."
-                className="search-input"
-              />
-            </div>
-            
-            <div className="search-actions">
-              <button className="header-button primary" title="Add Photo">
-                <CameraIcon />
-                <span style={{ marginLeft: '8px' }}>Add Photo</span>
-              </button>
-            </div>
-          </div>
           {currentView === 'background' ? (
             <div className="background-preview">
               <div className="preview-controls">
@@ -312,292 +517,167 @@ export const Dashboard: React.FC = () => {
                 </div>
               </div>
             </div>
-          ) : currentView === 'dashboard' ? (
-            <div className="content-grid">
-              {/* Wert-Übersicht Card - kompakt */}
-              <div className="status-card value-card compact">
-                <div className="card-header">
-                  <h3 className="card-title">Wert-Übersicht</h3>
-                  <span className="card-icon premium">
-                    <ChartIcon />
-                  </span>
+          ) : currentView === 'dashboard' && activeNav === 'home' ? (
+            <>
+              {/* Dashboard Controls */}
+              <div className="dashboard-controls">
+                <div className="controls-left">
+                  <h2 className="dashboard-main-title">Dashboard</h2>
                 </div>
-                
-                <div className="value-metrics">
-                  <div className="value-main">
-                    <span className="value-amount">€ 24.850</span>
-                    <span className="value-label">Gesamtwert</span>
-                  </div>
-                  
-                  <div className="value-breakdown">
-                    <div className="breakdown-item">
-                      <span className="breakdown-label">Elektronik</span>
-                      <span className="breakdown-value">€ 12.400</span>
-                    </div>
-                    <div className="breakdown-item">
-                      <span className="breakdown-label">Möbel</span>
-                      <span className="breakdown-value">€ 8.200</span>
-                    </div>
-                    <div className="breakdown-item">
-                      <span className="breakdown-label">Sonstiges</span>
-                      <span className="breakdown-value">€ 4.250</span>
-                    </div>
-                  </div>
+                <div className="controls-right">
+                  <button 
+                    className={`edit-mode-btn ${editMode ? 'active' : ''}`}
+                    onClick={toggleEditMode}
+                  >
+                    <EditIcon />
+                    <span>{editMode ? 'Fertig' : 'Bearbeiten'}</span>
+                  </button>
                 </div>
               </div>
 
-              {/* Erfassungsstatus Card */}
-              <div className="status-card">
-                <div className="card-header">
-                  <h3 className="card-title">Heutige Erfassung</h3>
-                  <span className="card-icon">
-                    <ChartIcon />
-                  </span>
-                </div>
-                
-                <div className="metrics-grid">
-                  <div className="metric-item">
-                    <div className="metric-ring">
-                      <svg viewBox="0 0 36 36" className="circular-chart">
-                        <path className="circle-bg"
-                          d="M18 2.0845
-                            a 15.9155 15.9155 0 0 1 0 31.831
-                            a 15.9155 15.9155 0 0 1 0 -31.831"
-                        />
-                        <path className="circle"
-                          strokeDasharray="78, 100"
-                          d="M18 2.0845
-                            a 15.9155 15.9155 0 0 1 0 31.831
-                            a 15.9155 15.9155 0 0 1 0 -31.831"
-                        />
-                        <text x="18" y="20.35" className="percentage">47</text>
-                      </svg>
-                    </div>
-                    <span className="metric-label">Artikel heute</span>
+              {/* Edit Mode Toolbar */}
+              {editMode && (
+                <div className="edit-toolbar">
+                  <div className="toolbar-info">
+                    <span>Karten ziehen zum Neuanordnen • Ecken ziehen für Resize • X zum Verstecken</span>
                   </div>
-                  <div className="metric-item">
-                    <div className="metric-ring">
-                      <svg viewBox="0 0 36 36" className="circular-chart green">
-                        <path className="circle-bg"
-                          d="M18 2.0845
-                            a 15.9155 15.9155 0 0 1 0 31.831
-                            a 15.9155 15.9155 0 0 1 0 -31.831"
-                        />
-                        <path className="circle"
-                          strokeDasharray="95, 100"
-                          d="M18 2.0845
-                            a 15.9155 15.9155 0 0 1 0 31.831
-                            a 15.9155 15.9155 0 0 1 0 -31.831"
-                        />
-                        <text x="18" y="20.35" className="percentage">142</text>
-                      </svg>
-                    </div>
-                    <span className="metric-label">Fotos heute</span>
-                  </div>
-                  <div className="metric-item">
-                    <div className="metric-ring">
-                      <svg viewBox="0 0 36 36" className="circular-chart blue">
-                        <path className="circle-bg"
-                          d="M18 2.0845
-                            a 15.9155 15.9155 0 0 1 0 31.831
-                            a 15.9155 15.9155 0 0 1 0 -31.831"
-                        />
-                        <path className="circle"
-                          strokeDasharray="32, 100"
-                          d="M18 2.0845
-                            a 15.9155 15.9155 0 0 1 0 31.831
-                            a 15.9155 15.9155 0 0 1 0 -31.831"
-                        />
-                        <text x="18" y="20.35" className="percentage">32s</text>
-                      </svg>
-                    </div>
-                    <span className="metric-label">Zeit pro Artikel</span>
-                  </div>
-                  <div className="metric-item">
-                    <div className="metric-ring">
-                      <svg viewBox="0 0 36 36" className="circular-chart orange">
-                        <path className="circle-bg"
-                          d="M18 2.0845
-                            a 15.9155 15.9155 0 0 1 0 31.831
-                            a 15.9155 15.9155 0 0 1 0 -31.831"
-                        />
-                        <path className="circle"
-                          strokeDasharray="46, 100"
-                          d="M18 2.0845
-                            a 15.9155 15.9155 0 0 1 0 31.831
-                            a 15.9155 15.9155 0 0 1 0 -31.831"
-                        />
-                        <text x="18" y="20.35" className="percentage">23</text>
-                      </svg>
-                    </div>
-                    <span className="metric-label">Offene Analysen</span>
+                  <div className="hidden-cards">
+                    {hiddenCards.map(cardId => (
+                      <button
+                        key={cardId}
+                        className="hidden-card-btn"
+                        onClick={() => toggleCardVisibility(cardId)}
+                      >
+                        <span>{cardData[cardId as keyof typeof cardData].title}</span>
+                      </button>
+                    ))}
                   </div>
                 </div>
-                
-                <button className="card-action-button">
-                  Weiter erfassen
-                </button>
-              </div>
+              )}
 
-              {/* Letzte Scans Card */}
-              <div className="status-card recent-scans-card">
-                <div className="card-header">
-                  <h3 className="card-title">Letzte Scans</h3>
-                  <span className="card-icon">
-                    <ClipboardIcon />
-                  </span>
-                </div>
-                
-                <div className="scans-list">
-                  {[
-                    { id: 1, name: 'MacBook Pro 16"', category: 'Elektronik', time: 'vor 5 Min', color: '#8D7BFB' },
-                    { id: 2, name: 'Bürostuhl Herman Miller', category: 'Möbel', time: 'vor 12 Min', color: '#3B82F6' },
-                    { id: 3, name: 'iPhone 15 Pro', category: 'Elektronik', time: 'vor 1 Std', color: '#8D7BFB' },
-                    { id: 4, name: 'Design Thinking Buch', category: 'Bücher', time: 'vor 2 Std', color: '#10B981' },
-                    { id: 5, name: 'Sony WH-1000XM5', category: 'Elektronik', time: 'vor 3 Std', color: '#8D7BFB' },
-                  ].map(item => (
-                    <div key={item.id} className="scan-item">
-                      <div className="scan-thumbnail" style={{ background: item.color }}>
-                        <FolderIcon />
-                      </div>
-                      <div className="scan-details">
-                        <span className="scan-name">{item.name}</span>
-                        <span className="scan-meta">{item.category} • {item.time}</span>
-                      </div>
-                      <div className="scan-actions">
-                        <button className="action-btn" title="Edit">
-                          <SettingsIcon />
-                        </button>
-                      </div>
-                    </div>
-                  ))}
-                </div>
-              </div>
-
-              {/* Kategorien Card */}
-              <div className="status-card categories-card">
-                <div className="card-header">
-                  <h3 className="card-title">Kategorien-Übersicht</h3>
-                  <span className="card-icon">
-                    <FolderIcon />
-                  </span>
-                </div>
-                
-                <div className="categories-list">
-                  {[
-                    { name: 'Elektronik', count: 45, percentage: 31, color: '#8D7BFB' },
-                    { name: 'Bücher', count: 67, percentage: 46, color: '#10B981' },
-                    { name: 'Möbel', count: 23, percentage: 16, color: '#3B82F6' },
-                    { name: 'Sonstiges', count: 12, percentage: 7, color: '#F59E0B' },
-                  ].map(category => (
-                    <div key={category.name} className="category-item">
-                      <div className="category-info">
-                        <div className="category-header">
-                          <span className="category-name">{category.name}</span>
-                          <span className="category-count">{category.count} Items</span>
+              {/* Dashboard Grid */}
+              <div ref={gridContainerRef} className="dashboard-grid-container">
+                <div className="dashboard-grid">
+                  {layout
+                    .filter(item => !hiddenCards.includes(item.i))
+                    .map((item) => (
+                      <div key={item.i} className="status-card">
+                        <div className="card-header">
+                          <h3 className="card-title">{cardData[item.i as keyof typeof cardData].title}</h3>
+                          <span className="card-icon">
+                            {getCardIcon(item.i)}
+                          </span>
                         </div>
-                        <div className="category-progress">
-                          <div 
-                            className="category-progress-fill" 
-                            style={{ 
-                              width: `${category.percentage}%`,
-                              background: category.color
-                            }}
-                          />
+                        
+                        <div className="card-content">
+                          {getCardContent(item.i, item.w, item.h)}
                         </div>
+
+                        {editMode && (
+                          <button 
+                            className="card-remove-btn"
+                            onClick={() => toggleCardVisibility(item.i)}
+                          >
+                            <CloseIcon />
+                          </button>
+                        )}
                       </div>
-                    </div>
-                  ))}
-                </div>
-                
-                <div className="categories-total">
-                  <span className="total-label">Gesamt</span>
-                  <span className="total-count">147 Items</span>
+                    ))}
                 </div>
               </div>
-
-              {/* Scan-Aktivität Card */}
-              <div className="status-card activity-card">
-                <div className="card-header">
-                  <h3 className="card-title">Scan-Aktivität</h3>
-                  <span className="card-icon">
-                    <ChartIcon />
-                  </span>
+            </>
+          ) : currentView === 'design' ? (
+            <DesignComponents />
+          ) : currentView === 'upload' ? (
+            <UploadCenter />
+          ) : currentView === 'drafts' ? (
+            <ProductDrafts 
+              onNavigateToUpload={() => {
+                setCurrentView('upload');
+                setActiveNav('upload');
+              }}
+            />
+          ) : currentView === 'layout-demo' ? (
+            <LayoutDemo />
+          ) : currentView === 'empty' ? (
+            <BasePage />
+          ) : currentView === 'builder' ? (
+            <PageBuilder />
+          ) : currentView === 'admin' ? (
+            <Administration onEditModeToggle={() => setEditMode(!editMode)} />
+          ) : currentView === 'marketplace' ? (
+            <div className="content-section">
+              {activeTab === 'overview' && (
+                <div className="section-overview">
+                  <p>Select eBay or Amazon tabs to manage your marketplace listings and integrations.</p>
                 </div>
-                
-                <div className="activity-chart">
-                  <svg viewBox="0 0 300 100" className="line-chart">
-                    <polyline
-                      fill="none"
-                      stroke="url(#gradient)"
-                      strokeWidth="2"
-                      points="0,80 50,65 100,70 150,40 200,45 250,20 300,35"
-                    />
-                    <defs>
-                      <linearGradient id="gradient" x1="0%" y1="0%" x2="100%" y2="0%">
-                        <stop offset="0%" style={{ stopColor: '#8D7BFB', stopOpacity: 0.8 }} />
-                        <stop offset="100%" style={{ stopColor: '#A593FF', stopOpacity: 1 }} />
-                      </linearGradient>
-                    </defs>
-                  </svg>
-                  <div className="chart-labels">
-                    <span>Mo</span>
-                    <span>Di</span>
-                    <span>Mi</span>
-                    <span>Do</span>
-                    <span>Fr</span>
-                    <span>Sa</span>
-                    <span>So</span>
-                  </div>
+              )}
+              {activeTab === 'ebay' && <MarketplacePanel />}
+              {activeTab === 'amazon' && <MarketplacePanel />}
+            </div>
+          ) : activeNav === 'questionnaire' ? (
+            <div className="content-section">
+              {activeTab === 'overview' && (
+                <div className="section-overview">
+                  <p>Track your Carbon Disclosure Project submissions and sustainability reporting.</p>
                 </div>
-                
-                <div className="activity-stats">
-                  <div className="stat-item">
-                    <span className="stat-value">+23%</span>
-                    <span className="stat-label">Diese Woche</span>
-                  </div>
-                  <div className="stat-item">
-                    <span className="stat-value">312</span>
-                    <span className="stat-label">Gesamt Scans</span>
-                  </div>
+              )}
+              {activeTab === 'pending' && (
+                <div className="section-content">
+                  <p>You have 2 questionnaires that require your attention.</p>
                 </div>
-              </div>
-
-
-
-              {/* Aufgaben & Erinnerungen Card */}
-              <div className="status-card tasks-card">
-                <div className="card-header">
-                  <h3 className="card-title">Aufgaben & Erinnerungen</h3>
-                  <span className="card-icon">
-                    <BellIcon />
-                  </span>
+              )}
+              {activeTab === 'completed' && (
+                <div className="section-content">
+                  <p>View your submission history and completed assessments.</p>
                 </div>
-                
-                <div className="tasks-list">
-                  <div className="task-item warning">
-                    <div className="task-indicator"></div>
-                    <div className="task-content">
-                      <span className="task-title">5 Items ohne Foto</span>
-                      <span className="task-action">Fotos hinzufügen</span>
-                    </div>
-                  </div>
-                  <div className="task-item info">
-                    <div className="task-indicator"></div>
-                    <div className="task-content">
-                      <span className="task-title">3 Items zur Überprüfung</span>
-                      <span className="task-action">Überprüfen</span>
-                    </div>
-                  </div>
-                  <div className="task-item error">
-                    <div className="task-indicator"></div>
-                    <div className="task-content">
-                      <span className="task-title">Backup überfällig</span>
-                      <span className="task-action">Jetzt sichern</span>
-                    </div>
-                  </div>
+              )}
+            </div>
+          ) : activeNav === 'reports' ? (
+            <div className="content-section">
+              {activeTab === 'overview' && (
+                <div className="section-overview">
+                  <p>Access all your business reports, analytics, and performance metrics.</p>
                 </div>
-              </div>
+              )}
+              {activeTab === 'sales' && (
+                <div className="section-content">
+                  <p>Track sales performance, revenue trends, and customer insights.</p>
+                </div>
+              )}
+              {activeTab === 'inventory' && (
+                <div className="section-content">
+                  <p>Monitor stock levels, turnover rates, and inventory movements.</p>
+                </div>
+              )}
+              {activeTab === 'analytics' && (
+                <div className="section-content">
+                  <p>Deep dive into business metrics with advanced analytics dashboards.</p>
+                </div>
+              )}
+            </div>
+          ) : activeNav === 'documents' ? (
+            <div className="content-section">
+              {activeTab === 'overview' && (
+                <div className="section-overview">
+                  <p>Browse and manage all your business documents in one place.</p>
+                </div>
+              )}
+              {activeTab === 'invoices' && (
+                <div className="section-content">
+                  <p>View, download, and manage your invoice documents.</p>
+                </div>
+              )}
+              {activeTab === 'receipts' && (
+                <div className="section-content">
+                  <p>Organize and access your purchase receipts.</p>
+                </div>
+              )}
+              {activeTab === 'reports' && (
+                <div className="section-content">
+                  <p>Access your archived reports and historical data.</p>
+                </div>
+              )}
             </div>
           ) : (
             <div className="design-system">

@@ -1,0 +1,78 @@
+/* BaseWithTabs Styles - Sticky Header Layout */
+
+.base-tabs-content {
+  display: flex;
+  flex-direction: column;
+  height: calc(100vh - 450px); /* Weniger Höhe für mehr Abstand unten */
+  min-height: 350px;
+  max-height: calc(100vh - 450px); /* Dynamisch an Viewport angepasst */
+  background: rgba(255, 255, 255, 0.02);
+  border-radius: var(--radius-xl);
+  border: 1px solid var(--border-default);
+  margin: 0;
+  margin-bottom: var(--space-8); /* Mehr Abstand zum unteren Rand */
+  overflow: hidden;
+}
+
+/* Header Bereich - bleibt sichtbar */
+.base-tabs-header {
+  flex-shrink: 0;
+  padding: var(--space-6) var(--space-6) 0;
+  border-bottom: 1px solid var(--border-default);
+  background: rgba(17, 9, 34, 0.3);
+}
+
+.base-tabs-title {
+  color: var(--text-primary);
+  margin-bottom: var(--space-4);
+  font-size: var(--text-2xl);
+  font-weight: var(--font-semibold);
+}
+
+.base-tabs-description {
+  color: var(--text-secondary);
+  font-size: var(--text-base);
+  line-height: var(--leading-relaxed);
+  margin-bottom: var(--space-4);
+}
+
+/* Scrollbarer Content Bereich */
+.base-tabs-scroll-area {
+  flex: 1;
+  overflow-y: auto;
+  overflow-x: hidden;
+  min-height: 0; /* Wichtig für Flexbox Scrolling */
+  padding: var(--space-6);
+  padding-bottom: var(--space-6); /* Standard Padding */
+  position: relative; /* Für sticky children */
+  
+  /* Smooth Scrolling */
+  scroll-behavior: smooth;
+  
+  /* Scrollbar verstecken */
+  scrollbar-width: none; /* Firefox */
+  -ms-overflow-style: none; /* IE/Edge */
+}
+
+/* Webkit Scrollbar verstecken */
+.base-tabs-scroll-area::-webkit-scrollbar {
+  display: none;
+}
+
+/* Legacy Support */
+.base-tabs-body {
+  padding-top: var(--space-4);
+  border-top: 1px solid var(--border-default);
+}
+
+.base-tabs-body p {
+  color: var(--text-primary);
+  margin-bottom: var(--space-3);
+  line-height: var(--leading-relaxed);
+}
+
+.base-tabs-empty {
+  padding: var(--space-8);
+  text-align: center;
+  color: var(--text-secondary);
+}

@@ -1,0 +1,20 @@
+tunnel: inventoscan-dev
+credentials-file: /Users/enricomaihack/.cloudflared/inventoscan-dev.json
+
+ingress:
+  # Frontend - Hauptdomain
+  - hostname: inventoscan.mindbit.net
+    service: http://localhost:5173
+    originRequest:
+      noTLSVerify: true
+      connectTimeout: 30s
+      
+  # Backend API - Subdomain
+  - hostname: api.inventoscan.mindbit.net
+    service: http://localhost:8000
+    originRequest:
+      noTLSVerify: true
+      connectTimeout: 30s
+      
+  # Catch-all rule (required)
+  - service: http_status:404

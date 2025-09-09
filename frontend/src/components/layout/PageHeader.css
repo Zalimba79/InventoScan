@@ -1,0 +1,67 @@
+/* Page Header - Konsistenter Header für alle Seiten */
+
+.page-header {
+  background: linear-gradient(
+    135deg,
+    rgba(141, 123, 251, 0.15) 0%,
+    rgba(165, 147, 255, 0.08) 50%,
+    rgba(141, 123, 251, 0.05) 100%
+  );
+  border-bottom: 1px solid var(--border-default);
+  padding: var(--space-6) var(--space-8);
+}
+
+.page-header-content {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  max-width: 1600px;
+  margin: 0 auto;
+  width: 100%;
+}
+
+.page-header-text {
+  flex: 1;
+}
+
+.page-title {
+  font-size: 2rem;
+  font-weight: 600;
+  color: var(--text-primary);
+  margin: 0;
+  line-height: 1.2;
+}
+
+.page-description {
+  font-size: 1rem;
+  color: var(--text-secondary);
+  margin: var(--space-2) 0 0 0;
+  line-height: 1.5;
+}
+
+.page-header-action {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .page-header {
+    padding: var(--space-4) var(--space-4);
+  }
+
+  .page-header-content {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: var(--space-4);
+  }
+
+  .page-title {
+    font-size: 1.5rem;
+  }
+
+  .page-header-action {
+    width: 100%;
+  }
+}

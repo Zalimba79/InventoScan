@@ -1,0 +1,99 @@
+.page-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: var(--space-6);
+  padding: 0;
+}
+
+.page-title {
+  font-size: var(--font-size-3xl);
+  font-weight: var(--font-bold);
+  color: var(--text-primary);
+  margin: 0;
+  letter-spacing: -0.02em;
+}
+
+.page-actions {
+  display: flex;
+  gap: var(--space-4);
+  align-items: center;
+}
+
+/* Search Container in Page Actions */
+.page-actions .search-container {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+  padding: var(--space-3) var(--space-4);
+  background: var(--glass-light);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-lg);
+  min-width: 250px;
+  transition: all var(--duration-200) var(--ease-out);
+}
+
+.page-actions .search-container:focus-within {
+  border-color: var(--primary-purple);
+  box-shadow: 0 0 0 3px rgba(141, 123, 251, 0.1);
+}
+
+.page-actions .search-input {
+  background: transparent;
+  border: none;
+  outline: none;
+  color: var(--text-primary);
+  font-size: var(--font-size-base);
+  width: 100%;
+  min-width: 150px;
+}
+
+.page-actions .search-input::placeholder {
+  color: var(--text-tertiary);
+}
+
+/* Add Button in Page Actions */
+.page-actions .add-button {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+  padding: var(--space-3) var(--space-5);
+  background: var(--gradient-purple);
+  border: none;
+  border-radius: var(--radius-lg);
+  color: var(--text-primary);
+  font-size: var(--font-size-base);
+  font-weight: var(--font-medium);
+  cursor: pointer;
+  transition: all var(--duration-200) var(--ease-out);
+  white-space: nowrap;
+}
+
+.page-actions .add-button:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 20px rgba(141, 123, 251, 0.3);
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .page-header {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: var(--space-4);
+  }
+  
+  .page-title {
+    font-size: var(--font-size-2xl);
+  }
+  
+  .page-actions {
+    width: 100%;
+  }
+  
+  .page-actions .search-container {
+    flex: 1;
+    min-width: auto;
+  }
+}

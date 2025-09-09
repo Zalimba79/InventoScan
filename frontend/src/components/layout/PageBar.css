@@ -1,0 +1,111 @@
+/* PageBar - Großer Titel-Balken wie im Screenshot */
+
+.page-bar {
+  width: 100%;
+  padding: 0 var(--space-8) var(--space-6) 0;
+  background: transparent;
+  position: relative;
+  overflow: hidden;
+  min-height: 90px;
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  margin-bottom: var(--space-6); /* 24px Abstand nach unten */
+}
+
+/* Rosa Gradient-Linie unten mit Design Token Farben */
+.page-bar::after {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: 2px;
+  background: var(--gradient-purple);
+  opacity: 0.5;
+  box-shadow: 
+    0 0 10px rgba(141, 123, 251, 0.3),
+    0 0 20px rgba(165, 147, 255, 0.2);
+}
+
+.page-bar-content {
+  position: relative;
+  z-index: 1;
+  flex: 1;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: var(--space-4);
+}
+
+.page-bar-text {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-1);
+}
+
+.page-bar-actions {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+}
+
+.page-bar-title {
+  font-size: calc(var(--title-gradient-size) * 0.9);
+  font-weight: var(--title-gradient-weight);
+  background: var(--title-gradient-bg);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  margin: 0;
+  letter-spacing: 1px;
+  text-shadow: 
+    0 0 30px rgba(141, 123, 251, 0.2);
+}
+
+.page-bar-subtitle {
+  font-size: 1rem;
+  color: var(--text-primary);
+  margin: 0;
+  margin-top: var(--space-2);
+  letter-spacing: 0.5px;
+  font-weight: 300;
+}
+
+
+/* Responsive */
+@media (max-width: 1024px) {
+  .page-bar {
+    padding: var(--space-8) var(--space-6);
+    min-height: 140px;
+  }
+
+  .page-bar-title {
+    font-size: 2.5rem;
+  }
+
+  .page-bar-subtitle {
+    font-size: 1rem;
+  }
+}
+
+@media (max-width: 768px) {
+  .page-bar {
+    padding: var(--space-6) var(--space-4);
+    min-height: 120px;
+  }
+
+  .page-bar-content {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: var(--space-2);
+  }
+
+  .page-bar-title {
+    font-size: 2rem;
+  }
+
+  .page-bar-subtitle {
+    font-size: 0.9rem;
+  }
+}

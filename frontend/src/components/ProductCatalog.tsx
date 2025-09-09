@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { createSafeImageProps } from '../utils/security';
 import './ProductCatalog.css';
 
 interface Product {
@@ -210,7 +211,7 @@ export const ProductCatalog: React.FC<ProductCatalogProps> = ({ onProductSelect 
             >
               <div className="product-image">
                 {product.image_url ? (
-                  <img src={product.image_url} alt={product.name} />
+                  <img {...createSafeImageProps(product.image_url || '', product.name)} />
                 ) : (
                   <div className="image-placeholder">
                     <span>📦</span>

@@ -1,0 +1,65 @@
+/* Page Content - Konsistenter Content-Bereich */
+
+.page-content {
+  flex: 1;
+  padding: var(--space-0);
+  overflow-y: auto;
+  background: var(--bg-dark-primary);
+  position: relative;
+}
+
+/* No Padding Variant */
+.page-content--no-padding {
+  padding: 0;
+}
+
+/* Content Container für maximale Breite */
+.page-content > * {
+  max-width: 1600px;
+  margin: 0 auto;
+  width: 100%;
+}
+
+/* Scrollbar Styling */
+.page-content::-webkit-scrollbar {
+  width: 8px;
+}
+
+.page-content::-webkit-scrollbar-track {
+  background: rgba(141, 123, 251, 0.05);
+  border-radius: var(--radius-md);
+}
+
+.page-content::-webkit-scrollbar-thumb {
+  background: rgba(141, 123, 251, 0.2);
+  border-radius: var(--radius-md);
+}
+
+.page-content::-webkit-scrollbar-thumb:hover {
+  background: rgba(141, 123, 251, 0.3);
+}
+
+/* Loading State */
+.page-content--loading {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 400px;
+}
+
+/* Empty State */
+.page-content--empty {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 400px;
+  text-align: center;
+  color: var(--text-secondary);
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .page-content {
+    padding: var(--space-4);
+  }
+}

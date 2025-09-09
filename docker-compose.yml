@@ -1,6 +1,23 @@
 version: '3.8'
 
 services:
+  postgres:
+    image: postgres:15-alpine
+    environment:
+      POSTGRES_DB: inventoscan
+      POSTGRES_USER: inventoscan
+      POSTGRES_PASSWORD: inventoscan_dev_2024
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+      - ./backend/init.sql:/docker-entrypoint-initdb.d/init.sql
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U inventoscan"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+
   backend:
     build: ./backend
     ports:
@@ -8,9 +25,15 @@ services:
     volumes:
       - ./backend:/app
       - /app/venv
+    env_file:
+      - ./backend/.env
     environment:
       - PYTHONUNBUFFERED=1
+      - DATABASE_URL=postgresql://inventoscan:inventoscan_dev_2024@postgres:5432/inventoscan
     command: uvicorn app:app --host 0.0.0.0 --port 8000 --reload
+    depends_on:
+      postgres:
+        condition: service_healthy
 
   frontend:
     build: ./frontend
@@ -21,3 +44,6 @@ services:
       - /app/node_modules
     environment:
       - WATCHPACK_POLLING=true
+
+volumes:
+  postgres_data:

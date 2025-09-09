@@ -1,0 +1,108 @@
+/* Security Status Styles - Updated for BaseWithTabs layout */
+
+.security-status-content {
+  padding: var(--space-4);
+}
+
+.security-status-content.loading {
+  text-align: center;
+  padding: var(--space-8);
+}
+
+.security-section {
+  margin-bottom: var(--space-4);
+  padding: var(--space-4);
+  background: var(--bg-card);
+  border-radius: var(--radius-lg);
+  border: 1px solid var(--border-default);
+  transition: all var(--transition-base);
+}
+
+.security-section:hover {
+  border-color: var(--primary-purple);
+  box-shadow: 0 0 20px rgba(141, 123, 251, 0.1);
+}
+
+.security-section h3 {
+  color: var(--primary-purple);
+  font-size: var(--text-lg);
+  margin-bottom: var(--space-3);
+  font-weight: var(--font-semibold);
+}
+
+.status-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: var(--space-2) 0;
+  border-bottom: 1px solid var(--border-subtle);
+}
+
+.status-item:last-child {
+  border-bottom: none;
+}
+
+.status-item .label {
+  color: var(--text-secondary);
+  font-size: var(--text-sm);
+  font-weight: var(--font-medium);
+}
+
+.status-item .value {
+  color: var(--text-primary);
+  font-weight: var(--font-medium);
+  font-size: var(--text-sm);
+}
+
+.status-item .value.active {
+  color: var(--success);
+}
+
+.status-item .value.inactive {
+  color: var(--error);
+}
+
+.status-item .value.mono {
+  font-family: 'Monaco', 'Courier New', monospace;
+  font-size: var(--text-xs);
+  background: var(--bg-dark-secondary);
+  padding: var(--space-1) var(--space-2);
+  border-radius: var(--radius-sm);
+}
+
+.security-summary {
+  margin-top: var(--space-4);
+  padding: var(--space-4);
+  background: linear-gradient(
+    135deg, 
+    rgba(141, 123, 251, 0.1) 0%, 
+    rgba(165, 147, 255, 0.1) 100%
+  );
+  border: 1px solid var(--primary-purple);
+  border-radius: var(--radius-lg);
+  text-align: center;
+}
+
+.summary-text {
+  color: var(--primary-purple);
+  font-weight: var(--font-semibold);
+  font-size: var(--text-base);
+  margin: 0;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+  .security-status-content {
+    padding: var(--space-2);
+  }
+  
+  .security-section {
+    padding: var(--space-3);
+  }
+  
+  .status-item {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: var(--space-1);
+  }
+}

@@ -1,0 +1,209 @@
+/* Layout Demo Styles */
+
+.layout-demo {
+  height: calc(100vh - 420px);
+  min-height: 350px;
+  max-height: calc(100vh - 420px);
+  display: flex;
+  flex-direction: column;
+  background: var(--bg-dark-primary);
+  overflow-y: auto;
+}
+
+.demo-header {
+  padding: var(--space-6) var(--space-8);
+  background: linear-gradient(
+    135deg,
+    rgba(141, 123, 251, 0.2) 0%,
+    rgba(165, 147, 255, 0.1) 100%
+  );
+  border-bottom: 1px solid var(--border-default);
+}
+
+.demo-header h1 {
+  color: var(--text-primary);
+  font-size: 2.5rem;
+  margin: 0;
+  background: var(--gradient-purple);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.demo-header p {
+  color: var(--text-secondary);
+  margin-top: var(--space-2);
+}
+
+/* Demo Tabs */
+.demo-tabs {
+  display: flex;
+  gap: var(--space-4);
+  padding: var(--space-4) var(--space-8);
+  background: var(--bg-dark-secondary);
+  border-bottom: 1px solid var(--border-default);
+}
+
+.demo-tab {
+  padding: var(--space-2) var(--space-4);
+  background: transparent;
+  border: 1px solid var(--border-default);
+  border-radius: var(--radius-md);
+  color: var(--text-secondary);
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.demo-tab:hover {
+  background: rgba(141, 123, 251, 0.1);
+  border-color: var(--primary-purple);
+  color: var(--text-primary);
+}
+
+.demo-tab.active {
+  background: var(--gradient-purple);
+  border-color: var(--primary-purple);
+  color: white;
+}
+
+/* Demo Preview */
+.demo-preview {
+  flex: 1;
+  overflow: hidden;
+  background: var(--bg-dark-primary);
+  border: 1px solid var(--border-default);
+  margin: var(--space-4);
+  border-radius: var(--radius-lg);
+}
+
+/* Demo Content */
+.demo-content {
+  padding: var(--space-6);
+}
+
+.demo-content h2 {
+  color: var(--text-primary);
+  margin-bottom: var(--space-4);
+}
+
+.demo-content p {
+  color: var(--text-secondary);
+  margin-bottom: var(--space-4);
+}
+
+/* Demo Cards */
+.demo-cards {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+  gap: var(--space-4);
+  margin-top: var(--space-6);
+}
+
+.demo-card {
+  padding: var(--space-4);
+  background: var(--bg-card);
+  border: 1px solid var(--border-default);
+  border-radius: var(--radius-lg);
+  transition: all 0.3s ease;
+}
+
+.demo-card:hover {
+  border-color: var(--primary-purple);
+  box-shadow: 0 4px 20px rgba(141, 123, 251, 0.2);
+  transform: translateY(-2px);
+}
+
+.demo-card h3 {
+  color: var(--primary-purple);
+  margin-bottom: var(--space-2);
+}
+
+.demo-card p {
+  color: var(--text-secondary);
+  font-size: 0.9rem;
+}
+
+/* Demo Action Button */
+.demo-action-btn {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+  padding: var(--space-3) var(--space-5);
+  background: var(--gradient-purple);
+  color: white;
+  border: none;
+  border-radius: var(--radius-full);
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  box-shadow: 0 4px 15px rgba(141, 123, 251, 0.3);
+}
+
+.demo-action-btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 25px rgba(141, 123, 251, 0.4);
+}
+
+/* Demo Filter Controls */
+.demo-filters {
+  display: flex;
+  gap: var(--space-3);
+  flex: 1;
+}
+
+.demo-search {
+  flex: 1;
+  padding: var(--space-2) var(--space-3);
+  background: var(--bg-dark-secondary);
+  border: 1px solid var(--border-default);
+  border-radius: var(--radius-md);
+  color: var(--text-primary);
+}
+
+.demo-search:focus {
+  outline: none;
+  border-color: var(--primary-purple);
+  box-shadow: 0 0 10px rgba(141, 123, 251, 0.2);
+}
+
+.demo-select {
+  padding: var(--space-2) var(--space-3);
+  background: var(--bg-dark-secondary);
+  border: 1px solid var(--border-default);
+  border-radius: var(--radius-md);
+  color: var(--text-primary);
+  min-width: 150px;
+}
+
+.demo-actions {
+  display: flex;
+  gap: var(--space-2);
+}
+
+.demo-filter-btn {
+  padding: var(--space-2) var(--space-4);
+  background: var(--primary-purple);
+  color: white;
+  border: none;
+  border-radius: var(--radius-md);
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.demo-filter-btn:hover {
+  background: var(--primary-purple-hover);
+  transform: translateY(-1px);
+}
+
+.demo-filter-btn.secondary {
+  background: transparent;
+  color: var(--text-secondary);
+  border: 1px solid var(--border-default);
+}
+
+.demo-filter-btn.secondary:hover {
+  background: rgba(255, 255, 255, 0.05);
+  color: var(--text-primary);
+  border-color: var(--primary-purple);
+}

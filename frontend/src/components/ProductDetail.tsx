@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { createSafeImageProps } from '../utils/security';
 import './ProductDetail.css';
 
 interface Product {
@@ -106,7 +107,7 @@ export const ProductDetail: React.FC<ProductDetailProps> = ({ productId, onBack 
         <div className="detail-main">
           <div className="detail-image">
             {product.image_url ? (
-              <img src={product.image_url} alt={product.name} />
+              <img {...createSafeImageProps(product.image_url || '', product.name)} />
             ) : (
               <div className="image-placeholder">
                 <span>📦</span>

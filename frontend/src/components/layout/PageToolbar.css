@@ -1,0 +1,97 @@
+/* Page Toolbar - Konsistente Toolbar für Tabs, Filter, etc. */
+
+.page-toolbar {
+  padding: 0 var(--space-8);
+  background: var(--bg-dark-primary);
+}
+
+/* Default Toolbar */
+.page-toolbar--default {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: var(--space-4);
+  padding-top: var(--space-4);
+  padding-bottom: var(--space-4);
+}
+
+/* Tabs Variant */
+.page-toolbar--tabs {
+  display: flex;
+  gap: var(--space-6);
+  border-bottom: 1px solid rgba(141, 123, 251, 0.2);
+  padding-bottom: 0;
+  overflow-x: auto;
+  scrollbar-width: thin;
+}
+
+/* Filters Variant */
+.page-toolbar--filters {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: var(--space-4);
+  padding-top: var(--space-3);
+  padding-bottom: var(--space-3);
+  background: rgba(255, 255, 255, 0.02);
+  border: 1px solid var(--border-default);
+  border-radius: var(--radius-lg);
+  margin: var(--space-4) var(--space-8);
+  padding-left: var(--space-4);
+  padding-right: var(--space-4);
+}
+
+/* Tab Item (wenn in tabs variant verwendet) */
+.page-toolbar--tabs .tab-item {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+  padding: var(--space-3) var(--space-1);
+  margin-bottom: -1px;
+  background: transparent;
+  border: none;
+  border-bottom: 2px solid transparent;
+  color: var(--text-secondary);
+  cursor: pointer;
+  transition: all 0.3s ease;
+  font-size: 0.95rem;
+  white-space: nowrap;
+  position: relative;
+}
+
+.page-toolbar--tabs .tab-item:hover {
+  color: var(--text-primary);
+}
+
+.page-toolbar--tabs .tab-item.active {
+  color: var(--primary-purple);
+  border-bottom-color: var(--primary-purple);
+}
+
+.page-toolbar--tabs .tab-item.active::after {
+  content: '';
+  position: absolute;
+  bottom: -1px;
+  left: 0;
+  right: 0;
+  height: 2px;
+  background: var(--primary-purple);
+  box-shadow: 0 0 10px rgba(141, 123, 251, 0.5);
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .page-toolbar {
+    padding: 0 var(--space-4);
+  }
+
+  .page-toolbar--filters {
+    margin: var(--space-3) var(--space-4);
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .page-toolbar--tabs {
+    -webkit-overflow-scrolling: touch;
+  }
+}

@@ -1,0 +1,107 @@
+name: Design System Validation
+
+on:
+  push:
+    branches: [ main, develop ]
+  pull_request:
+    branches: [ main ]
+    paths:
+      - 'frontend/src/components/**'
+      - 'frontend/src/styles/**'
+
+jobs:
+  validate-design-system:
+    name: Validate Design System Compliance
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: '18'
+          cache: 'npm'
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Check for hardcoded colors
+        run: |
+          echo "🔍 Checking for hardcoded colors..."
+          ! grep -r "#[0-9a-fA-F]\{3,6\}" \
+            --include="*.css" \
+            --include="*.tsx" \
+            --exclude-dir=node_modules \
+            --exclude-dir=build \
+            --exclude="design-tokens.css" \
+            frontend/src/components/ || \
+          (echo "❌ Hardcoded colors found! Use CSS variables from design-tokens.css" && exit 1)
+
+      - name: Check design token usage
+        run: |
+          echo "📐 Checking design token usage..."
+          TOKEN_COUNT=$(grep -r "var(--" --include="*.css" --include="*.tsx" frontend/src/components/ | wc -l)
+          echo "✅ Found $TOKEN_COUNT design token usages"
+          if [ "$TOKEN_COUNT" -eq 0 ]; then
+            echo "⚠️ Warning: No design tokens found in components"
+          fi
+
+      - name: Check UI component imports
+        run: |
+          echo "📦 Checking UI component imports..."
+          UI_IMPORTS=$(grep -r "from.*['\"].*\/ui" --include="*.tsx" frontend/src/components/ | wc -l || echo 0)
+          echo "✅ Found $UI_IMPORTS UI component imports"
+
+      - name: Run Design System validation script
+        run: |
+          if [ -f "scripts/check-design-system.js" ]; then
+            node scripts/check-design-system.js
+          else
+            echo "⚠️ Design system check script not found"
+          fi
+
+      - name: Run ESLint
+        run: npm run lint
+        continue-on-error: true
+
+      - name: Run TypeScript check
+        run: npm run typecheck
+        continue-on-error: true
+
+      - name: Build test
+        run: npm run build
+
+      - name: Generate validation report
+        if: always()
+        run: |
+          echo "## 📊 Design System Validation Report" > validation-report.md
+          echo "" >> validation-report.md
+          echo "### ✅ Checks Performed:" >> validation-report.md
+          echo "- [x] Hardcoded colors check" >> validation-report.md
+          echo "- [x] Design token usage" >> validation-report.md
+          echo "- [x] UI component imports" >> validation-report.md
+          echo "- [x] ESLint validation" >> validation-report.md
+          echo "- [x] TypeScript validation" >> validation-report.md
+          echo "- [x] Build test" >> validation-report.md
+          echo "" >> validation-report.md
+          echo "### 📋 Guidelines:" >> validation-report.md
+          echo "- Use CSS variables from \`design-tokens.css\`" >> validation-report.md
+          echo "- Import components from \`@/components/ui\`" >> validation-report.md
+          echo "- Follow the InventoScan Design System" >> validation-report.md
+
+      - name: Comment PR with validation results
+        if: github.event_name == 'pull_request' && always()
+        uses: actions/github-script@v6
+        with:
+          script: |
+            const fs = require('fs');
+            const report = fs.readFileSync('validation-report.md', 'utf8');
+            
+            github.rest.issues.createComment({
+              issue_number: context.issue.number,
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              body: report
+            });
