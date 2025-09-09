@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useRef, useCallback, useMemo } from 'react';
 import { BaseWithTabs, type TabContentData } from './layout';
 import { AddPhotoButton, ProductCard } from './ui';
-import { sanitizeInput, sanitizeProductCode, createSafeHtml, createSafeImageProps } from '../utils/security';
+import { sanitizeInput, createSafeHtml, createSafeImageProps } from '../utils/security';
 import './ProductDrafts.css';
 
 // Icons
@@ -220,9 +220,9 @@ export const ProductDrafts: React.FC<ProductDraftsProps> = ({ onNavigateToUpload
 
   // Filter and search
   const filteredDrafts = unanalyzedDrafts.filter(draft => {
-    const sanitizedProductCode = sanitizeProductCode(draft.productCode).toLowerCase();
+    const productCode = draft.productCode.toLowerCase();
     const sanitizedSearchTerm = sanitizeInput(searchTerm).toLowerCase();
-    return sanitizedProductCode.includes(sanitizedSearchTerm);
+    return productCode.includes(sanitizedSearchTerm);
   });
 
   // Sort
@@ -368,7 +368,7 @@ export const ProductDrafts: React.FC<ProductDraftsProps> = ({ onNavigateToUpload
                     <button 
                       className="action-btn delete"
                       onClick={() => { 
-                        if (window.confirm(`Möchten Sie das Produkt ${sanitizeProductCode(draft.productCode)} löschen?`)) {
+                        if (window.confirm(`Möchten Sie das Produkt ${draft.productCode} löschen?`)) {
                           setDrafts(prevDrafts => prevDrafts.filter(d => d.id !== draft.id));
                         }
                       }}
@@ -412,7 +412,7 @@ export const ProductDrafts: React.FC<ProductDraftsProps> = ({ onNavigateToUpload
                   }}
                   onDeleteClick={(id) => {
                     const d = drafts.find(dr => dr.id === id);
-                    if (d && window.confirm(`Möchten Sie das Produkt ${sanitizeProductCode(d.productCode)} löschen?`)) {
+                    if (d && window.confirm(`Möchten Sie das Produkt ${d.productCode} löschen?`)) {
                       setDrafts(prevDrafts => prevDrafts.filter(dr => dr.id !== id));
                     }
                   }}

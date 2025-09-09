@@ -1,5 +1,5 @@
 import React, { useState, useRef } from 'react';
-import { BaseWithTabs, type TabContentData } from './layout/BaseWithTabs';
+import { BaseWithoutNavigation } from './layout/BaseWithoutNavigation';
 import './UploadCenter.css';
 
 const CameraIcon = () => (
@@ -30,7 +30,7 @@ const UploadIcon = () => (
   </svg>
 );
 
-const UploadContent: React.FC = () => {
+export const UploadCenter: React.FC = () => {
   const [productGroup, setProductGroup] = useState('Neues Produkt');
   const [autoAnalyze, setAutoAnalyze] = useState(true);
   const [selectedFiles, setSelectedFiles] = useState<File[]>([]);
@@ -138,272 +138,172 @@ const UploadContent: React.FC = () => {
   };
 
   return (
-    <div className="upload-content-wrapper">
-      <div className="upload-section">
-        <div className="section-header">
-          <span className="section-icon">🧾</span>
-          <h3>Produktgruppe</h3>
-        </div>
-        <select 
-          className="product-group-select"
-          value={productGroup}
-          onChange={(e) => setProductGroup(e.target.value)}
-        >
-          {productGroups.map(group => (
-            <option key={group} value={group}>{group}</option>
-          ))}
-        </select>
-      </div>
-
-      <div className="upload-section">
-        <div className="section-header">
-          <span className="section-icon">📸</span>
-          <h3>Upload-Funktionen</h3>
-        </div>
-        
-        <div className="upload-options">
-          <div 
-            className="upload-option"
-            onClick={() => fileInputRef.current?.click()}
-          >
-            <FileIcon />
-            <span>Datei wählen</span>
-            <small>Einzelbild oder mehrere</small>
-            <input
-              ref={fileInputRef}
-              type="file"
-              multiple
-              accept="image/*"
-              onChange={handleFileSelect}
-              style={{ display: 'none' }}
-            />
-          </div>
-
-          <div 
-            className="upload-option"
-            onClick={() => folderInputRef.current?.click()}
-          >
-            <FolderIcon />
-            <span>Ordner hochladen</span>
-            <small>z.B. Kameraordner</small>
-            <input
-              ref={folderInputRef}
-              type="file"
-              multiple
-              webkitdirectory=""
-              directory=""
-              onChange={handleFileSelect}
-              style={{ display: 'none' }}
-            />
-          </div>
-
-          <div 
-            className="upload-option"
-            onClick={isWebcamActive ? stopWebcam : startWebcam}
-          >
-            <CameraIcon />
-            <span>Webcam-Aufnahme</span>
-            <small>{isWebcamActive ? 'Aktiv' : 'Livebild mit Auslöser'}</small>
-          </div>
-        </div>
-
-        {isWebcamActive && (
-          <div className="webcam-container">
-            <video 
-              ref={videoRef} 
-              autoPlay 
-              playsInline
-              className="webcam-preview"
-            />
-            <div className="webcam-controls">
-              <button className="capture-button" onClick={capturePhoto}>
-                📸 Foto aufnehmen
-              </button>
-              <button className="stop-button" onClick={stopWebcam}>
-                ⏹ Kamera beenden
-              </button>
-            </div>
-          </div>
-        )}
-
-        <div 
-          className="drop-zone"
-          onDrop={handleDrop}
-          onDragOver={handleDragOver}
-        >
-          <UploadIcon />
-          <p>Dateien hier ablegen</p>
-          <small>oder eine der obigen Optionen wählen</small>
-        </div>
-
-        {selectedFiles.length > 0 && (
-          <div className="selected-files">
-            <h3>Ausgewählte Dateien ({selectedFiles.length})</h3>
-            <div className="file-list">
-              {selectedFiles.map((file, index) => (
-                <div key={index} className="file-item">
-                  <span className="file-name">{file.name}</span>
-                  <span className="file-size">
-                    {(file.size / 1024).toFixed(1)} KB
-                  </span>
-                  <button 
-                    className="remove-file"
-                    onClick={() => removeFile(index)}
-                  >
-                    ×
-                  </button>
-                </div>
-              ))}
-            </div>
-          </div>
-        )}
-      </div>
-
-      <div className="upload-section">
-        <div className="section-header">
-          <span className="section-icon">🧠</span>
-          <h3>Optionen</h3>
-        </div>
-        
-        <label className="auto-analyze-checkbox">
-          <input
-            type="checkbox"
-            checked={autoAnalyze}
-            onChange={(e) => setAutoAnalyze(e.target.checked)}
-          />
-          <span className="checkbox-label">
-            📊 Nach Upload automatisch analysieren
-          </span>
-        </label>
-      </div>
-
-      {uploadProgress > 0 && (
-        <div className="upload-progress">
-          <div className="progress-bar">
-            <div 
-              className="progress-fill"
-              style={{ width: `${uploadProgress}%` }}
-            />
-          </div>
-          <span className="progress-text">{uploadProgress}%</span>
-        </div>
-      )}
-
-      <div className="upload-actions">
-        <button 
-          className="upload-button"
-          onClick={handleUpload}
-          disabled={selectedFiles.length === 0 || uploadProgress > 0}
-        >
-          {uploadProgress > 0 ? 'Wird hochgeladen...' : 'Produkt erfassen'}
-        </button>
-      </div>
-    </div>
-  );
-};
-
-const RecentUploads: React.FC = () => {
-  const recentItems = [
-    { id: 1, name: 'iPhone 13 Pro', date: '2024-01-15', status: 'Analysiert' },
-    { id: 2, name: 'Samsung TV', date: '2024-01-14', status: 'In Bearbeitung' },
-    { id: 3, name: 'Nike Schuhe', date: '2024-01-13', status: 'Hochgeladen' },
-    { id: 4, name: 'Lego Set', date: '2024-01-12', status: 'Analysiert' },
-    { id: 5, name: 'Bücher Sammlung', date: '2024-01-11', status: 'Analysiert' },
-  ];
-
-  return (
-    <div className="recent-uploads">
-      <div className="recent-list">
-        {recentItems.map(item => (
-          <div key={item.id} className="recent-item">
-            <div className="recent-item-info">
-              <span className="recent-item-name">{item.name}</span>
-              <span className="recent-item-date">{item.date}</span>
-            </div>
-            <span className={`recent-item-status status-${item.status.toLowerCase().replace(' ', '-')}`}>
-              {item.status}
-            </span>
-          </div>
-        ))}
-      </div>
-    </div>
-  );
-};
-
-const BatchProcessing: React.FC = () => {
-  const batchJobs = [
-    { id: 1, name: 'Kameraordner Import', files: 42, progress: 75 },
-    { id: 2, name: 'Backup Wiederherstellung', files: 128, progress: 30 },
-    { id: 3, name: 'Sammlung Digitalisierung', files: 15, progress: 100 },
-  ];
-
-  return (
-    <div className="batch-processing">
-      <div className="batch-list">
-        {batchJobs.map(job => (
-          <div key={job.id} className="batch-item">
-            <div className="batch-info">
-              <span className="batch-name">{job.name}</span>
-              <span className="batch-files">{job.files} Dateien</span>
-            </div>
-            <div className="batch-progress">
-              <div className="progress-bar">
-                <div 
-                  className="progress-fill"
-                  style={{ width: `${job.progress}%` }}
-                />
-              </div>
-              <span className="progress-text">{job.progress}%</span>
-            </div>
-          </div>
-        ))}
-      </div>
-    </div>
-  );
-};
-
-export const UploadCenter: React.FC = () => {
-  const tabs: TabContentData[] = [
-    {
-      id: 'upload',
-      label: 'Hochladen',
-      icon: <UploadIcon />,
-      content: {
-        title: 'Neue Produkte erfassen',
-        description: 'Laden Sie Fotos hoch oder nutzen Sie die Webcam für die Produkterfassung',
-        component: <UploadContent />
-      }
-    },
-    {
-      id: 'recent',
-      label: 'Letzte Uploads',
-      icon: <FileIcon />,
-      content: {
-        title: 'Kürzlich hochgeladene Produkte',
-        description: 'Überblick über Ihre letzten Uploads und deren Bearbeitungsstatus',
-        component: <RecentUploads />
-      }
-    },
-    {
-      id: 'batch',
-      label: 'Stapelverarbeitung',
-      icon: <FolderIcon />,
-      content: {
-        title: 'Batch-Jobs',
-        description: 'Verarbeitung größerer Mengen von Produktbildern',
-        component: <BatchProcessing />
-      }
-    }
-  ];
-
-  return (
-    <BaseWithTabs
+    <BaseWithoutNavigation
       title="Upload-Zentrale"
       subtitle="Erfassen Sie neue Produkte schnell und einfach"
-      tabs={tabs}
-      defaultTab="upload"
-      className="upload-center-tabs"
-    />
+    >
+      <div className="upload-content-wrapper">
+        <div className="upload-section">
+          <div className="section-header">
+            <span className="section-icon">🧾</span>
+            <h3>Produktgruppe</h3>
+          </div>
+          <select 
+            className="product-group-select"
+            value={productGroup}
+            onChange={(e) => setProductGroup(e.target.value)}
+          >
+            {productGroups.map(group => (
+              <option key={group} value={group}>{group}</option>
+            ))}
+          </select>
+        </div>
+
+        <div className="upload-section">
+          <div className="section-header">
+            <span className="section-icon">📸</span>
+            <h3>Upload-Funktionen</h3>
+          </div>
+          
+          <div className="upload-options">
+            <div 
+              className="upload-option"
+              onClick={() => fileInputRef.current?.click()}
+            >
+              <FileIcon />
+              <span>Datei wählen</span>
+              <small>Einzelbild oder mehrere</small>
+              <input
+                ref={fileInputRef}
+                type="file"
+                multiple
+                accept="image/*"
+                onChange={handleFileSelect}
+                style={{ display: 'none' }}
+              />
+            </div>
+
+            <div 
+              className="upload-option"
+              onClick={() => folderInputRef.current?.click()}
+            >
+              <FolderIcon />
+              <span>Ordner hochladen</span>
+              <small>z.B. Kameraordner</small>
+              <input
+                ref={folderInputRef}
+                type="file"
+                multiple
+                webkitdirectory=""
+                directory=""
+                onChange={handleFileSelect}
+                style={{ display: 'none' }}
+              />
+            </div>
+
+            <div 
+              className="upload-option"
+              onClick={isWebcamActive ? stopWebcam : startWebcam}
+            >
+              <CameraIcon />
+              <span>Webcam-Aufnahme</span>
+              <small>{isWebcamActive ? 'Aktiv' : 'Livebild mit Auslöser'}</small>
+            </div>
+          </div>
+
+          {isWebcamActive && (
+            <div className="webcam-container">
+              <video 
+                ref={videoRef} 
+                autoPlay 
+                playsInline
+                className="webcam-preview"
+              />
+              <div className="webcam-controls">
+                <button className="capture-button" onClick={capturePhoto}>
+                  📸 Foto aufnehmen
+                </button>
+                <button className="stop-button" onClick={stopWebcam}>
+                  ⏹ Kamera beenden
+                </button>
+              </div>
+            </div>
+          )}
+
+          <div 
+            className="drop-zone"
+            onDrop={handleDrop}
+            onDragOver={handleDragOver}
+          >
+            <UploadIcon />
+            <p>Dateien hier ablegen</p>
+            <small>oder eine der obigen Optionen wählen</small>
+          </div>
+
+          {selectedFiles.length > 0 && (
+            <div className="selected-files">
+              <h3>Ausgewählte Dateien ({selectedFiles.length})</h3>
+              <div className="file-list">
+                {selectedFiles.map((file, index) => (
+                  <div key={index} className="file-item">
+                    <span className="file-name">{file.name}</span>
+                    <span className="file-size">
+                      {(file.size / 1024).toFixed(1)} KB
+                    </span>
+                    <button 
+                      className="remove-file"
+                      onClick={() => removeFile(index)}
+                    >
+                      ×
+                    </button>
+                  </div>
+                ))}
+              </div>
+            </div>
+          )}
+        </div>
+
+        <div className="upload-section">
+          <div className="section-header">
+            <span className="section-icon">🧠</span>
+            <h3>Optionen</h3>
+          </div>
+          
+          <label className="auto-analyze-checkbox">
+            <input
+              type="checkbox"
+              checked={autoAnalyze}
+              onChange={(e) => setAutoAnalyze(e.target.checked)}
+            />
+            <span className="checkbox-label">
+              📊 Nach Upload automatisch analysieren
+            </span>
+          </label>
+        </div>
+
+        {uploadProgress > 0 && (
+          <div className="upload-progress">
+            <div className="progress-bar">
+              <div 
+                className="progress-fill"
+                style={{ width: `${uploadProgress}%` }}
+              />
+            </div>
+            <span className="progress-text">{uploadProgress}%</span>
+          </div>
+        )}
+
+        <div className="upload-actions">
+          <button 
+            className="upload-button"
+            onClick={handleUpload}
+            disabled={selectedFiles.length === 0 || uploadProgress > 0}
+          >
+            {uploadProgress > 0 ? 'Wird hochgeladen...' : 'Produkt erfassen'}
+          </button>
+        </div>
+      </div>
+    </BaseWithoutNavigation>
   );
 };
 
